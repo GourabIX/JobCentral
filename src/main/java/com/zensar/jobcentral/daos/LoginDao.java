@@ -1,21 +1,18 @@
 package com.zensar.jobcentral.daos;
 
-import java.util.List;
-
-import com.zensar.jobcentral.entities.Admin;
-import com.zensar.jobcentral.entities.Login;
-
 /**
- * @author Priya Mirchandani
- * @creation_date 5 october 2019 5.36pm
- * @modification_date 5 october 2019 5.36pm
+ * @author Priya Mirchandani, Gourab Sarkar
+ * @creation_date October 5, 2019 17:36
+ * @modification_date October 12, 2019 21:57 
  * @version 1.0
- * @copyright Zensar Technologies.all rights reserved
- * @description it is a dao class using persistance layer
+ * @copyright Zensar Technologies. All rights reserved
  *
  */
+
+import com.zensar.jobcentral.entities.Login;
+
 public interface LoginDao {
-	Login getById(int userId);
+	Login getUserById(int userId);
 	void insert(Login login);
 	void update(Login login);
 	void delete(Login login);

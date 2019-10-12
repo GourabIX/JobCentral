@@ -1,7 +1,5 @@
 package com.zensar.jobcentral.services;
 
-import java.util.List;
-
 /**
  * @author Gourab Sarkar
  * @modification_date 11 Oct 2019 20:57
@@ -11,29 +9,33 @@ import java.util.List;
  * @description This is the Employer Service class which implements the EmployerService interface and is a part of Business layer of the application.
  */
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.zensar.jobcentral.daos.EmployerDao;
+import com.zensar.jobcentral.daos.LoginDao;
 import com.zensar.jobcentral.entities.Employer;
 import com.zensar.jobcentral.entities.Login;
 import com.zensar.jobcentral.exceptions.EmployerException;
 import com.zensar.jobcentral.exceptions.LoginException;
 
+@Service
+@Transactional
 public class EmployerServiceImpl implements EmployerService {
 
+	@Autowired
 	private EmployerDao employerDao;
 	
-	public EmployerDao getEmployerDao() throws EmployerException{
-		return employerDao;
-	}
+	@Autowired
+	private LoginDao loginDao;
 
 	@Override
-	public void setEmployerDao(EmployerDao employerDao) throws EmployerException {
-		this.employerDao = employerDao;
-	}
-
-	@Override
-	public boolean validateUser(Login loginAuth) throws EmployerException, LoginException {
-		
-		Login dbEmployer = getEmployerCredentialsByUsername(loginAuth.getUsername());
+	public boolean validateUser(Login loginAuth) throws EmployerException, LoginException 
+	{
+		Login dbEmployer = findEmployerCredentialsByUsername(loginAuth.getUsername());
 		
 		if (dbEmployer != null)
 		{
@@ -52,44 +54,54 @@ public class EmployerServiceImpl implements EmployerService {
 	}
 
 	@Override
-	public void addEmployer(Employer employer) throws EmployerException {
-		
+	public void addEmployer(Employer employer) throws EmployerException 
+	{
+		employerDao.insertEmployer(employer);
 	}
 
 	@Override
-	public void updateEmployer(Employer employer) throws EmployerException {
-		
+	public void updateEmployer(Employer employer) throws EmployerException 
+	{
+		employerDao.updateEmployer(employer);
 	}
 
 	@Override
-	public void removeEmployer(Employer employer) throws EmployerException {
-		
+	public void removeEmployer(int employerId) throws EmployerException 
+	{
+		employerDao.deleteEmployer(employerId);
 	}
 
 	@Override
-	public Employer getEmployerByUsername(String username) throws EmployerException {
-		return null;
+	public Employer findEmployerByUsername(String username) throws EmployerException 
+	{
+		return employerDao.getEmployerByUsername(username);
 	}
 
 	@Override
-	public Employer getEmployerByUserId(int userId) throws EmployerException {
-		return null;
+	public Login findEmployerCredentialsByUsername(String username) throws LoginException 
+	{
+		Employer employer = employerDao.getEmployerByUsername(username);
+		return loginDao.getUserById(employer.getEmployerId());
 	}
 
 	@Override
-	public Login getEmployerCredentialsByUsername(String username) throws LoginException {
-		return null;
+	public List<Employer> findAllEmployers() throws EmployerException 
+	{
+		List<Employer> listOfAllEmployers = employerDao.getAllEmployers();
+		return listOfAllEmployers;
 	}
 
 	@Override
-	public List<Employer> findAllEmployers() throws EmployerException {
-		return null;
+	public long getEmployerCount() throws EmployerException 
+	{
+		List<Employer> listOfAllEmployers = findAllEmployers();
+		return listOfAllEmployers.size();
 	}
 
 	@Override
-	public void getEmployerDao(EmployerDao employerDao) throws EmployerException {
-		// TODO Auto-generated method stub
-		
+	public Employer findEmployerById(int employerId) throws EmployerException 
+	{
+		return employerDao.getEmployerById(employerId);
 	}
 
 }

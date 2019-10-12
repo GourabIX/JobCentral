@@ -2,12 +2,11 @@ package com.zensar.jobcentral.daos;
 
 /**
  * @author Priya Mirchandani, Gourab Sarkar
- * @modification_date 12 Oct 2019 11:33
+ * @modification_date 12 Oct 2019 21:05
  * @creation_date 04 Oct 2019 10:08
  * @version 0.1
  * @copyright Zensar Technologies 2019. All rights reserved.
  * @description This is the Employer DAO interface used in the persistence layer.
- * 				This has been modified to adapt to SPB config.
  */
 
 import java.util.List;
@@ -18,6 +17,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.zensar.jobcentral.entities.Employer;
@@ -25,49 +26,45 @@ import com.zensar.jobcentral.entities.Employer;
 @Repository
 public class EmployerDaoImpl implements EmployerDao 
 {
-	
-	private Session session;
-	
-	public EmployerDaoImpl() 
-	{
-		Configuration c=new Configuration().configure();
-		SessionFactory f= c.buildSessionFactory();
-		session=f.openSession();
-	}
-	
+	@Autowired
+	private HibernateTemplate hibernateTemplate;
+
 	@Override
-	public List<Employer> getAllEmployers() 
+	public List<Employer> getAllEmployers()
 	{
-		return session.createQuery("from Employer").getResultList();	
+		return (List<Employer>) hibernateTemplate.find("FROM Employer");
 	}
-	
+
 	@Override
-	public Employer getById(int userId) 
+	public Employer getEmployerById(int employerId) 
 	{
-		return session.get(Employer.class, userId);
+		return hibernateTemplate.get(Employer.class, employerId);
 	}
-	
+
 	@Override
-	public void insert(Employer employer) {
-		Transaction t=session.beginTransaction();
-		session.save(employer);
-		t.commit();	
-	}
-	
-	@Override
-	public void update(Employer employer) 
+	public void insertEmployer(Employer employer) 
 	{
-		Transaction t1=session.beginTransaction();
-		session.update(employer);
-		t1.commit();
+		hibernateTemplate.save(employer);
+		System.out.println("Debug: Employer having ID: " + employer.getEmployerId() + " has been saved successfully.");
 	}
-	
+
 	@Override
-	public void delete(Employer employer) 
+	public void updateEmployer(Employer employer) 
 	{
-		Transaction t2=session.beginTransaction();
-		session.delete(employer);
-		t2.commit();	
+		hibernateTemplate.update(employer);
+		System.out.println("Debug: Employer having ID: " + employer.getEmployerId() + " has been updated successfully.");
 	}
-	
+
+	@Override
+	public void deleteEmployer(int employerId) 
+	{
+		hibernateTemplate.delete(getEmployerById(employerId));
+		System.out.println("Debug: Employer having ID: " + employerId + " has been deleted successfully.");
+	}
+
+	@Override
+	public Employer getEmployerByUsername(String username) 
+	{
+		return hibernateTemplate.get(Employer.class, username);
+	}
 }

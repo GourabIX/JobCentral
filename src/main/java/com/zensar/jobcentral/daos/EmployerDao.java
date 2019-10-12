@@ -16,8 +16,9 @@ import com.zensar.jobcentral.entities.Employer;
 public interface EmployerDao
 {
 	List<Employer> getAllEmployers();
-	Employer getById(int userId);
-	void insert(Employer employer);
-	void update(Employer employer) ;
-	void delete(Employer employer);
+	Employer getEmployerById(int employerId);
+	Employer getEmployerByUsername(String username);
+	void insertEmployer(Employer employer);
+	void updateEmployer(Employer employer) ;
+	void deleteEmployer(int employerId);
 }

@@ -30,7 +30,7 @@ public class LoginDaoImpl implements LoginDao {
 		session=f.openSession();
 	}
 	@Override
-	public Login getById(int userId) {
+	public Login getUserById(int userId) {
 		return session.get(Login.class, userId);
 	}
 
