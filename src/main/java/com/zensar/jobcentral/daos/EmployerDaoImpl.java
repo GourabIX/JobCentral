@@ -10,18 +10,10 @@ package com.zensar.jobcentral.daos;
  */
 
 import java.util.List;
-
-import javax.persistence.Query;
-
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
+import com.zensar.jobcentral.entities.Employer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.stereotype.Repository;
-
-import com.zensar.jobcentral.entities.Employer;
 
 @Repository
 public class EmployerDaoImpl implements EmployerDao 

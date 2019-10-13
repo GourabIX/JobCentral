@@ -1,25 +1,26 @@
 package com.zensar.jobcentral.daos;
+
 /**
- * @author Priya Mirchandani
- * @creation_date 9 october 2019 2.12pm
- * @modification_date 9 october 2019 2.12pm
- * @version 1.0
- * @copyright Zensar Technologies.all rights reserved
- * @description it is a dao class using persistance layer
- *
+ * @author Priya Mirchandani, Gourab Sarkar
+ * @modification_date 13 Oct 2019 11:33
+ * @creation_date 04 Oct 2019 10:08
+ * @version 0.1
+ * @copyright Zensar Technologies 2019. All rights reserved.
+ * @description This is the JobApplications DAO interface used in the persistence layer.
  */
+
 import java.util.List;
 
 import com.zensar.jobcentral.entities.Company;
 import com.zensar.jobcentral.entities.JobApplications;
 
-public interface JobApplicationsDao {
-	List<JobApplications>getAll();
-	JobApplications getByApplicationId(String applicationId);
-     JobApplications getByJobId(String jobId);
-	
-	
-	void insert(JobApplications jobApplication);
-	void update(JobApplications jobApplication);
-	void delete(JobApplications jobApplication);
+public interface JobApplicationsDao 
+{
+	List<JobApplications>getAllJobApplications();
+	List<JobApplications>getJobApplicationsByCompany(Company company);
+	JobApplications getByJobApplicationId(String applicationId);
+	List<JobApplications> getByJobId(String jobId);
+	void insertJobApplication(JobApplications jobApplication);
+	void updateJobApplication(JobApplications jobApplication);
+	void deleteJobApplication(JobApplications jobApplication);
 }

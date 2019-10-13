@@ -1,60 +1,56 @@
 package com.zensar.jobcentral.daos;
+
 /**
- * @author Priya Mirchandani
- * @creation_date 7 october 2019 6.52pm
- * @modification_date 7 october 2019 6.52pm
- * @version 1.0
- * @copyright Zensar Technologies.all rights reserved
- * @description it is a daoimpl class using persistance layer
- *
+ * @author Priya Mirchandani, Gourab Sarkar
+ * @modification_date 13 Oct 2019 11:42
+ * @creation_date 04 Oct 2019 10:08
+ * @version 0.1
+ * @copyright Zensar Technologies 2019. All rights reserved.
+ * @description This is the implementation of Login DAO interface used in the persistence layer.
  */
-import java.util.List;
 
-import javax.persistence.Query;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.hibernate5.HibernateTemplate;
+import org.springframework.stereotype.Repository;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
-
-import com.zensar.jobcentral.entities.Location;
 import com.zensar.jobcentral.entities.Login;
 
+@Repository
+public class LoginDaoImpl implements LoginDao 
+{
+	@Autowired
+	private HibernateTemplate hibernateTemplate;
 
-
-public class LoginDaoImpl implements LoginDao {
-	private Session session;
-	public LoginDaoImpl() {
-		Configuration c=new Configuration().configure();
-		SessionFactory f= c.buildSessionFactory();
-		session=f.openSession();
-	}
 	@Override
-	public Login getUserById(int userId) {
-		return session.get(Login.class, userId);
+	public Login getUserById(int userId) 
+	{
+		return hibernateTemplate.get(Login.class, userId);
 	}
 
 	@Override
-	public void insert(Login login) {
-		Transaction t=session.beginTransaction();
-		session.save(login);
-		t.commit();
-		
+	public Login getUserByUsername(String username) 
+	{
+		return hibernateTemplate.get(Login.class, username);
 	}
 
 	@Override
-	public void update(Login login) {
-		Transaction t=session.beginTransaction();
-		session.update(login);
-		t.commit();
+	public void insert(Login login) 
+	{
+		hibernateTemplate.save(login);
+		System.out.println("Debug: User having ID: " + login.getUserId() + " has been saved successfully.");
 	}
 
 	@Override
-	public void delete(Login login) {
-		Transaction t=session.beginTransaction();
-		session.delete(login);
-		t.commit();
+	public void update(Login login) 
+	{
+		hibernateTemplate.update(login);
+		System.out.println("Debug: User having ID: " + login.getUserId() + " has been updated successfully.");
 	}
-	
 
+	@Override
+	public void delete(Login login) 
+	{
+		hibernateTemplate.delete(login);
+		System.out.println("Debug: User having ID: " + login.getUserId() + " has been deleted successfully.");
+	}
 }

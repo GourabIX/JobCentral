@@ -1,73 +1,70 @@
 package com.zensar.jobcentral.daos;
 
-import java.util.List;
-
-import javax.persistence.Query;
-
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
-
-import com.zensar.jobcentral.entities.Admin;
-import com.zensar.jobcentral.entities.JobApplications;
-import com.zensar.jobcentral.entities.Location;
-
 /**
- * @author Priya Mirchandani
- * @creation_date 5 october 2019 5.37pm
- * @modification_date 5 october 2019 5.37pm
- * @version 1.0
- * @copyright Zensar Technologies.all rights reserved
- * @description it is a daoimpl class using persistance layer
- *
+ * @author Priya Mirchandani, Gourab Sarkar
+ * @modification_date 13 Oct 2019 11:33
+ * @creation_date 04 Oct 2019 10:08
+ * @version 0.1
+ * @copyright Zensar Technologies 2019. All rights reserved.
+ * @description This is the implementation of JobApplications DAO interface used in the persistence layer.
  */
+
+import java.util.List;
+import com.zensar.jobcentral.entities.Company;
+import com.zensar.jobcentral.entities.JobApplications;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.hibernate5.HibernateTemplate;
+import org.springframework.stereotype.Repository;
+
+@Repository
 public class JobApplicationsDaoImpl implements JobApplicationsDao {
-	private Session session;
-	public JobApplicationsDaoImpl() {
-		Configuration c=new Configuration().configure();
-		SessionFactory f= c.buildSessionFactory();
-		session=f.openSession();
-}
-	@Override
-	public List<JobApplications> getAll() {
-		Query q=session.createQuery("from JobApplications");
-		return q.getResultList();
-	}
 
-	@Override
-	public JobApplications getByApplicationId(String applicationId) {
-		return session.get(JobApplications.class, applicationId);
-	}
-
-	@Override
-	public JobApplications getByJobId(String jobId) {
-		return session.get(JobApplications.class, jobId);
-	}
-
-	@Override
-	public void insert(JobApplications jobApplication) {
-		Transaction t=session.beginTransaction();
-		session.save( jobApplication);
-		t.commit();
-		
-	}
-
-	@Override
-	public void update(JobApplications jobApplication) {
-		Transaction t=session.beginTransaction();
-		session.update( jobApplication);
-		t.commit();
-		
-	}
-
-	@Override
-	public void delete(JobApplications jobApplication) {
-		Transaction t=session.beginTransaction();
-		session.delete( jobApplication);
-		t.commit();
-		
-	}
+	@Autowired
+	private HibernateTemplate hibernateTemplate;
 	
+	@Override
+	public void deleteJobApplication(JobApplications jobApplication) 
+	{
+		hibernateTemplate.delete(jobApplication);
+		System.out.println("Debug: Job Application having ID: " + jobApplication.getApplicationId() + " has been deleted successfully.");
+	}
+
+	@Override
+	public List<JobApplications> getAllJobApplications() 
+	{
+		return (List<JobApplications>) hibernateTemplate.find("FROM JobApplications");
+	}
+
+	@Override
+	public JobApplications getByJobApplicationId(String applicationId) 
+	{
+		return hibernateTemplate.get(JobApplications.class, applicationId);
+	}
+
+	@Override
+	public List<JobApplications> getByJobId(String jobId) 
+	{
+		return (List<JobApplications>) hibernateTemplate.find("FROM JobApplications WHERE jobId=?", jobId);
+	}
+
+	@Override
+	public List<JobApplications> getJobApplicationsByCompany(Company company) 
+	{
+		return (List<JobApplications>) hibernateTemplate.find("FROM JobApplications WHERE companyId=?", company.getCompanyId());
+	}
+
+	@Override
+	public void insertJobApplication(JobApplications jobApplication) 
+	{
+		hibernateTemplate.save(jobApplication);
+		System.out.println("Debug: Job Application having ID: " + jobApplication.getApplicationId() + " has been saved successfully.");
+	}
+
+	@Override
+	public void updateJobApplication(JobApplications jobApplication) 
+	{
+		hibernateTemplate.update(jobApplication);
+		System.out.println("Debug: Job Application having ID: " + jobApplication.getApplicationId() + " has been updated successfully.");
+	}
 	
 }
