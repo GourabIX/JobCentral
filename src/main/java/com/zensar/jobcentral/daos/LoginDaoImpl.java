@@ -1,56 +1,97 @@
 package com.zensar.jobcentral.daos;
 
 /**
- * @author Priya Mirchandani, Gourab Sarkar
- * @modification_date 13 Oct 2019 11:42
- * @creation_date 04 Oct 2019 10:08
+ * @author Gourab Sarkar
+ * @modification_date 13 Oct 2019 22:42
+ * @creation_date 13 Oct 2019 22:42
  * @version 0.1
  * @copyright Zensar Technologies 2019. All rights reserved.
- * @description This is the implementation of Login DAO interface used in the persistence layer.
+ * @description This is the implementation of JobApplications DAO interface used in the persistence layer.
  */
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate5.HibernateTemplate;
+import com.zensar.jobcentral.entities.Login;
+import org.hibernate.HibernateException;
 import org.springframework.stereotype.Repository;
 
-import com.zensar.jobcentral.entities.Login;
-
 @Repository
-public class LoginDaoImpl implements LoginDao 
+public class LoginDaoImpl extends DaoAssistant implements LoginDao 
 {
-	@Autowired
-	private HibernateTemplate hibernateTemplate;
 
 	@Override
 	public Login getUserById(int userId) 
 	{
-		return hibernateTemplate.get(Login.class, userId);
+		try
+		{
+			beginTx();
+			return getCurrentSession().get(Login.class, userId);
+		}
+		catch (HibernateException hbexc)
+		{
+			hbexc.printStackTrace();
+		}
+		return null;
 	}
 
 	@Override
 	public Login getUserByUsername(String username) 
 	{
-		return hibernateTemplate.get(Login.class, username);
+		try
+		{
+			beginTx();
+			return getCurrentSession().get(Login.class, username);
+		}
+		catch (HibernateException hbexc)
+		{
+			hbexc.printStackTrace();
+		}
+		return null;
 	}
 
 	@Override
 	public void insertUser(Login login) 
 	{
-		hibernateTemplate.save(login);
-		System.out.println("Debug: User having ID: " + login.getUserId() + " has been saved successfully.");
+		try
+		{
+			beginTx();
+			getCurrentSession().save(login);
+			commitTransaction();
+			System.out.println("Debug: User having ID: " + login.getUserId() + " has been saved successfully.");
+		}
+		catch (HibernateException hbexc)
+		{
+			hbexc.printStackTrace();
+		}
 	}
 
 	@Override
 	public void updateUser(Login login) 
 	{
-		hibernateTemplate.update(login);
-		System.out.println("Debug: User having ID: " + login.getUserId() + " has been updated successfully.");
+		try
+		{
+			beginTx();
+			getCurrentSession().update(login);
+			commitTransaction();
+			System.out.println("Debug: User having ID: " + login.getUserId() + " has been updated successfully.");
+		}
+		catch (HibernateException hbexc)
+		{
+			hbexc.printStackTrace();
+		}	
 	}
 
 	@Override
 	public void deleteUser(Login login) 
 	{
-		hibernateTemplate.delete(login);
-		System.out.println("Debug: User having ID: " + login.getUserId() + " has been deleted successfully.");
+		try
+		{
+			beginTx();
+			getCurrentSession().delete(login);
+			commitTransaction();
+			System.out.println("Debug: User having ID: " + login.getUserId() + " has been deleted successfully.");
+		}
+		catch (HibernateException hbexc)
+		{
+			hbexc.printStackTrace();
+		}	
 	}
 }

@@ -11,52 +11,107 @@ package com.zensar.jobcentral.daos;
 
 import java.util.List;
 import com.zensar.jobcentral.entities.Employer;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate5.HibernateTemplate;
+
+import org.hibernate.HibernateException;
+import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class EmployerDaoImpl implements EmployerDao 
+public class EmployerDaoImpl extends DaoAssistant implements EmployerDao
 {
-	@Autowired
-	private HibernateTemplate hibernateTemplate;
 
 	@Override
 	public List<Employer> getAllEmployers()
 	{
-		return (List<Employer>) hibernateTemplate.find("FROM Employer");
+		try 
+		{
+			beginTx();
+			Query query = getCurrentSession().createQuery("FROM Employer");
+			List<Employer> listOfEmployers = query.list();
+			return listOfEmployers;
+		}
+		catch (HibernateException hbexc) 
+		{
+			hbexc.printStackTrace();
+		}
+		return null;
 	}
 
 	@Override
 	public Employer getEmployerById(int employerId) 
 	{
-		return hibernateTemplate.get(Employer.class, employerId);
+		try 
+		{
+			beginTx();
+			return getCurrentSession().get(Employer.class, employerId);	
+		}
+		catch (HibernateException hbexc) 
+		{
+			hbexc.printStackTrace();
+		}
+		return null;
 	}
 
 	@Override
 	public void insertEmployer(Employer employer) 
 	{
-		hibernateTemplate.save(employer);
-		System.out.println("Debug: Employer having ID: " + employer.getEmployerId() + " has been saved successfully.");
+		try
+		{
+			beginTx();
+			getCurrentSession().save(employer);
+			commitTransaction();
+			System.out.println("Debug: Employer having ID: " + employer.getEmployerId() + " has been saved successfully.");
+		}
+		catch (HibernateException hbexc) 
+		{
+			hbexc.printStackTrace();
+		}
 	}
 
 	@Override
 	public void updateEmployer(Employer employer) 
 	{
-		hibernateTemplate.update(employer);
-		System.out.println("Debug: Employer having ID: " + employer.getEmployerId() + " has been updated successfully.");
+		try
+		{
+			beginTx();
+			getCurrentSession().update(employer);
+			commitTransaction();
+			System.out.println("Debug: Employer having ID: " + employer.getEmployerId() + " has been updated successfully.");
+		}
+		catch (HibernateException hbexc) 
+		{
+			hbexc.printStackTrace();
+		}
 	}
 
 	@Override
 	public void deleteEmployer(int employerId) 
 	{
-		hibernateTemplate.delete(getEmployerById(employerId));
-		System.out.println("Debug: Employer having ID: " + employerId + " has been deleted successfully.");
+		try
+		{
+			beginTx();
+			getCurrentSession().delete(getEmployerById(employerId));
+			commitTransaction();
+			System.out.println("Debug: Employer having ID: " + employerId + " has been deleted successfully.");
+		}
+		catch (HibernateException hbexc) 
+		{
+			hbexc.printStackTrace();
+		}
 	}
 
 	@Override
 	public Employer getEmployerByUsername(String username) 
 	{
-		return hibernateTemplate.get(Employer.class, username);
+		try
+		{
+			beginTx();
+			return getCurrentSession().get(Employer.class, username);
+		}
+		catch (HibernateException hbexc) 
+		{
+			hbexc.printStackTrace();
+		}
+		return null;
 	}
 }

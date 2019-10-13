@@ -1,9 +1,9 @@
 package com.zensar.jobcentral.daos;
 
 /**
- * @author Priya Mirchandani, Gourab Sarkar
- * @modification_date 13 Oct 2019 11:33
- * @creation_date 04 Oct 2019 10:08
+ * @author Gourab Sarkar
+ * @modification_date 13 Oct 2019 22:33
+ * @creation_date 13 Oct 2019 22:33
  * @version 0.1
  * @copyright Zensar Technologies 2019. All rights reserved.
  * @description This is the implementation of JobApplications DAO interface used in the persistence layer.
@@ -12,59 +12,126 @@ package com.zensar.jobcentral.daos;
 import java.util.List;
 import com.zensar.jobcentral.entities.Company;
 import com.zensar.jobcentral.entities.JobApplications;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate5.HibernateTemplate;
+import org.hibernate.HibernateException;
+import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class JobApplicationsDaoImpl implements JobApplicationsDao {
-
-	@Autowired
-	private HibernateTemplate hibernateTemplate;
+public class JobApplicationsDaoImpl extends DaoAssistant implements JobApplicationsDao 
+{
 	
 	@Override
 	public void deleteJobApplication(JobApplications jobApplication) 
 	{
-		hibernateTemplate.delete(jobApplication);
-		System.out.println("Debug: Job Application having ID: " + jobApplication.getApplicationId() + " has been deleted successfully.");
+		try
+		{
+			beginTx();
+			getCurrentSession().delete(jobApplication);
+			commitTransaction();
+			System.out.println("Debug: Job Application having ID: " + jobApplication.getApplicationId() + " has been deleted successfully.");
+		}
+		catch (HibernateException hbexc)
+		{
+			hbexc.printStackTrace();
+		}
 	}
 
 	@Override
 	public List<JobApplications> getAllJobApplications() 
 	{
-		return (List<JobApplications>) hibernateTemplate.find("FROM JobApplications");
+		try
+		{
+			beginTx();
+			Query query = getCurrentSession().createQuery("FROM JobApplications");
+			List<JobApplications> listOfAllJobApplications = query.list();
+			return listOfAllJobApplications;
+		}
+		catch (HibernateException hbexc)
+		{
+			hbexc.printStackTrace();
+		}
+		return null;
 	}
 
 	@Override
 	public JobApplications getByJobApplicationId(String applicationId) 
 	{
-		return hibernateTemplate.get(JobApplications.class, applicationId);
+		try
+		{
+			beginTx();
+			return getCurrentSession().get(JobApplications.class, applicationId);
+		}
+		catch (HibernateException hbexc) 
+		{
+			hbexc.printStackTrace();
+		}
+		return null;
 	}
 
 	@Override
 	public List<JobApplications> getByJobId(String jobId) 
 	{
-		return (List<JobApplications>) hibernateTemplate.find("FROM JobApplications WHERE jobId=?", jobId);
+		try
+		{
+			beginTx();
+			Query query = getCurrentSession().createQuery("FROM JobApplications JA WHERE JA.jobId = :jobId");
+			query.setParameter("jobId", jobId);
+			List<JobApplications> listOfJobApplicationsByJobId = query.list();
+			return listOfJobApplicationsByJobId;
+		}
+		catch (HibernateException hbexc) 
+		{
+			hbexc.printStackTrace();
+		}
+		return null;
 	}
 
 	@Override
 	public List<JobApplications> getJobApplicationsByCompany(Company company) 
 	{
-		return (List<JobApplications>) hibernateTemplate.find("FROM JobApplications WHERE companyId=?", company.getCompanyId());
+		try
+		{
+			beginTx();
+			Query query = getCurrentSession().createQuery("FROM JobApplications JA WHERE JA.companyId = :companyId");
+			query.setParameter("companyId", company.getCompanyId());
+			List<JobApplications> listOfJobApplicationsByCompany = query.list();
+			return listOfJobApplicationsByCompany;
+		}
+		catch (HibernateException hbexc) 
+		{
+			hbexc.printStackTrace();
+		}
+		return null;
 	}
 
 	@Override
 	public void insertJobApplication(JobApplications jobApplication) 
 	{
-		hibernateTemplate.save(jobApplication);
-		System.out.println("Debug: Job Application having ID: " + jobApplication.getApplicationId() + " has been saved successfully.");
+		try
+		{
+			beginTx();
+			getCurrentSession().save(jobApplication);
+			System.out.println("Debug: Job Application having ID: " + jobApplication.getApplicationId() + " has been saved successfully.");
+		}
+		catch (HibernateException hbexc) 
+		{
+			hbexc.printStackTrace();
+		}
 	}
 
 	@Override
 	public void updateJobApplication(JobApplications jobApplication) 
 	{
-		hibernateTemplate.update(jobApplication);
-		System.out.println("Debug: Job Application having ID: " + jobApplication.getApplicationId() + " has been updated successfully.");
+		try
+		{
+			beginTx();
+			getCurrentSession().update(jobApplication);
+			System.out.println("Debug: Job Application having ID: " + jobApplication.getApplicationId() + " has been updated successfully.");
+		}
+		catch (HibernateException hbexc) 
+		{
+			hbexc.printStackTrace();
+		}
 	}
 	
 }
