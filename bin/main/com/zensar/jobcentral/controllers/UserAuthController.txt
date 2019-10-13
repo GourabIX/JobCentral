@@ -91,8 +91,8 @@ public class UserAuthController extends HttpServlet {
 			// For the Employer
 			employerDao = new EmployerDaoImpl();
 			employerService = new EmployerServiceImpl();
-			employerService.setEmployerDao(employerDao);
-			setEmployerService(employerService);
+			// employerService.setEmployerDao(employerDao);
+			// setEmployerService(employerService);
 			
 			// For the Admin
 			adminDao = new AdminDaoImpl();

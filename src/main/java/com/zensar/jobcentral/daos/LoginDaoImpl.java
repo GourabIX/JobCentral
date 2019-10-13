@@ -34,21 +34,21 @@ public class LoginDaoImpl implements LoginDao
 	}
 
 	@Override
-	public void insert(Login login) 
+	public void insertUser(Login login) 
 	{
 		hibernateTemplate.save(login);
 		System.out.println("Debug: User having ID: " + login.getUserId() + " has been saved successfully.");
 	}
 
 	@Override
-	public void update(Login login) 
+	public void updateUser(Login login) 
 	{
 		hibernateTemplate.update(login);
 		System.out.println("Debug: User having ID: " + login.getUserId() + " has been updated successfully.");
 	}
 
 	@Override
-	public void delete(Login login) 
+	public void deleteUser(Login login) 
 	{
 		hibernateTemplate.delete(login);
 		System.out.println("Debug: User having ID: " + login.getUserId() + " has been deleted successfully.");

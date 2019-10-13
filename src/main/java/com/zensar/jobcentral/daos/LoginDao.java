@@ -13,9 +13,11 @@ import com.zensar.jobcentral.entities.Login;
 
 public interface LoginDao 
 {
+	// Here 'user' refers to either an employer, jobseeker or an admin.
+
 	Login getUserById(int userId);
 	Login getUserByUsername(String username);
-	void insert(Login login);
-	void update(Login login);
-	void delete(Login login);
+	void insertUser(Login login);
+	void updateUser(Login login);
+	void deleteUser(Login login);
 }
