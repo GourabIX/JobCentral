@@ -1,5 +1,6 @@
 package com.zensar.jobcentral.exceptions;
 
+@SuppressWarnings("serial")
 public class EmployerException extends Exception
 {
 	private String errormessage;

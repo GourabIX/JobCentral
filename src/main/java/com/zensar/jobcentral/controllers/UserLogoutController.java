@@ -1,7 +1,5 @@
 package com.zensar.jobcentral.controllers;
 
-import java.io.IOException;
-
 /**
  * @author Gourab Sarkar
  * @modification_date 13 Oct 2019 23:26
@@ -14,6 +12,7 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;

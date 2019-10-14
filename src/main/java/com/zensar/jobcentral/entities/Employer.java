@@ -35,7 +35,7 @@ public class Employer {
 	@Column(nullable = false, updatable = true)
 	private String name;
 	@Column(unique = true ,nullable = false, updatable = true)
-	private int contact;											// Can be either mobile phone or desk-phone
+	private long contact;											// Can be either mobile phone or desk-phone
 	@Column(nullable = false, updatable = true)
 	private String designation;
 	
@@ -70,11 +70,11 @@ public class Employer {
 		this.name = name;
 	}
 
-	public int getContact() {
+	public long getContact() {
 		return contact;
 	}
 
-	public void setContact(int contact) {
+	public void setContact(long contact) {
 		this.contact = contact;
 	}
 

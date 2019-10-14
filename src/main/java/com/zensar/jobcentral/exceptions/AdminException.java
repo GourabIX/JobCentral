@@ -1,5 +1,6 @@
 package com.zensar.jobcentral.exceptions;
 
+@SuppressWarnings("serial")
 public class AdminException extends Exception
 {
 		private String errormessage;
