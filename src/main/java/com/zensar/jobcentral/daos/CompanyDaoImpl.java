@@ -2,16 +2,13 @@ package com.zensar.jobcentral.daos;
 
 import java.util.List;
 
-import javax.persistence.Query;
+import org.hibernate.HibernateException;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
+import org.springframework.stereotype.Repository;
 
-import com.zensar.jobcentral.entities.Admin;
 import com.zensar.jobcentral.entities.Company;
-import com.zensar.jobcentral.entities.Login;
+
 
 /**
  * @author Priya Mirchandani
@@ -22,42 +19,81 @@ import com.zensar.jobcentral.entities.Login;
  * @description it is a daoimpl class using persistance layer
  *
  */
-public class CompanyDaoImpl implements CompanyDao {
-	private Session session;
-	public CompanyDaoImpl() {
-		Configuration c=new Configuration().configure();
-		SessionFactory f= c.buildSessionFactory();
-		session=f.openSession();
-	}
+@Repository
+public class CompanyDaoImpl extends DaoAssistant implements CompanyDao {
+	
 	@Override
-	public List<Company> getAll() {
-		
-		Query q=session.createQuery("from Company");
-		return q.getResultList();
-	}
-	@Override
-	public Company getById(int companyId) {
-		return session.get(Company.class, companyId);
-	}
-	@Override
-	public void insert(Company company) {
-		Transaction t=session.beginTransaction();
-		session.save(company);
-		t.commit();
+	public List<Company> getAllCompanies() {
+		try 
+		{
+			beginTx();
+			Query query = getCurrentSession().createQuery("From  Company");
+			List<Company> listOfCompanies =  query.list();
+			return listOfCompanies;
+		}
+		catch (HibernateException hbexc) 
+		{
+			hbexc.printStackTrace();
+		}
+		return null;
 		
 	}
 	@Override
-	public void update(Company company) {
-		Transaction t=session.beginTransaction();
-		session.update(company);
-		t.commit();
+	public Company getByCompanyId(int companyId) {
+		try 
+		{
+			beginTx();
+			return getCurrentSession().get(Company.class, companyId);	
+		}
+		catch (HibernateException hbexc) 
+		{
+			hbexc.printStackTrace();
+		}
+		return null;
+	}
+	@Override
+	public void insertCompany(Company company) {
+		try
+		{
+			beginTx();
+			getCurrentSession().save(company);
+			commitTransaction();
+			System.out.println("Debug: company having ID: " + company.getCompanyId() + " has been saved successfully.");
+		}
+		catch (HibernateException hbexc) 
+		{
+			hbexc.printStackTrace();
+		}
 		
 	}
 	@Override
-	public void delete(Company company) {
-		Transaction t=session.beginTransaction();
-		session.delete(company);
-		t.commit();
+	public void updateCompany(Company company) {
+		try
+		{
+			beginTx();
+			getCurrentSession().update(company);
+			commitTransaction();
+			System.out.println("Debug: company having ID: " +company.getCompanyId() + " has been updated successfully.");
+		}
+		catch (HibernateException hbexc) 
+		{
+			hbexc.printStackTrace();
+		}
+		
+	}
+	@Override
+	public void deleteCompany(int companyId) {
+		try
+		{
+			beginTx();
+			getCurrentSession().delete(getByCompanyId(companyId));
+			commitTransaction();
+			System.out.println("Debug: company having ID: " + companyId + " has been deleted successfully.");
+		}
+		catch (HibernateException hbexc) 
+		{
+			hbexc.printStackTrace();
+		}
 		
 	}
 	

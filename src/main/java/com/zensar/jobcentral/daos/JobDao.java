@@ -8,11 +8,11 @@ import com.zensar.jobcentral.entities.Job;
 
 public interface JobDao {
 
-	List <Job>getAll();
-	Job getById(int jobId);
+	List <Job>getAllJobs();
+	Job getByJobId(int jobId);
 	Job getByCategory(String category);
 	Job getByLocation(int locationId);
-	void insert(Job job);
-	void update(Job job);
-	void delete(Job job);
+	void insertJobs(Job job);
+	void updateJobs(Job job);
+	void deleteJobs(Job job);
 }

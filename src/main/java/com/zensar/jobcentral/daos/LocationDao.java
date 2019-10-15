@@ -10,15 +10,15 @@ package com.zensar.jobcentral.daos;
  */
 import java.util.List;
 
-import com.zensar.jobcentral.entities.Admin;
+
 import com.zensar.jobcentral.entities.Location;
 
 public interface LocationDao {
 
-	List<Location>getAll();
-	Location getById(int locationId);
-	void insert(Location location);
-	void update(Location location);
-	void delete(Location location);
+	List<Location>getAllLocations();
+	Location getByLocationId(int locationId);
+	void insertLocation(Location location);
+	void updateLocation(Location location);
+	void deleteLocation(Location location);
 		
 }

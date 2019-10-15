@@ -2,68 +2,121 @@ package com.zensar.jobcentral.daos;
 
 import java.util.List;
 
-import javax.persistence.Query;
+import org.hibernate.HibernateException;
 
+import org.hibernate.query.Query;
+import org.springframework.stereotype.Repository;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
-
-import com.zensar.jobcentral.entities.Admin;
 import com.zensar.jobcentral.entities.Job;
 
-public class JobDaoImpl  implements JobDao {
-     private Session session;
-     public JobDaoImpl() {
-    Configuration c= new Configuration().configure();
-    SessionFactory f=c.buildSessionFactory();
-    Session s=f.openSession();
-    }
+@Repository
+public class JobDaoImpl extends DaoAssistant  implements JobDao {
+     
      
 	@Override
-	public List<Job> getAll() {
-		Query q=session.createQuery("from Job");
-		return q.getResultList();
+	public List<Job> getAllJobs() {
+		try 
+		{
+			beginTx();
+			Query query = getCurrentSession().createQuery("From Jobs");
+			List<Job> listOfJobs = query.list();
+			return listOfJobs;
+		}
+		catch (HibernateException hbexc) 
+		{
+			hbexc.printStackTrace();
+		}
+		return null;
 	}
 
 	@Override
-	public Job getById(int jobId) {
-		return session.get(Job.class, jobId);
+	public Job getByJobId(int jobId) {
+		try
+		{
+			beginTx();
+			return getCurrentSession().get(Job.class, jobId);	
+		}
+		catch (HibernateException hbexc) 
+		{
+			hbexc.printStackTrace();
+		}
+		return null;
 	}
 
 	@Override
 	public Job getByCategory(String category) {
-		return session.get(Job.class, category);
+		try
+		{
+			beginTx();
+			return getCurrentSession().get(Job.class, category);	
+		}
+		catch (HibernateException hbexc) 
+		{
+			hbexc.printStackTrace();
+		}
+		return null;
 	}
 	
 	@Override
 	public Job getByLocation(int locationId) {
-		return session.get(Job.class, locationId);
+		try
+		{
+			beginTx();
+			return getCurrentSession().get(Job.class, locationId);	
+		}
+		catch (HibernateException hbexc) 
+		{
+			hbexc.printStackTrace();
+		}
+		return null;
 	}
 	
 	
 	@Override
-	public void insert(Job job) {
-		Transaction t=session.beginTransaction();
-		session.save(job);
-		t.commit();
+	public void insertJobs(Job job) {
+		try
+		{
+			beginTx();
+			getCurrentSession().save(job);
+			commitTransaction();
+			System.out.println("Debug: job having ID: " + job.getJobId() + " has been saved successfully.");
+		}
+		catch (HibernateException hbexc) 
+		{
+			hbexc.printStackTrace();
+		}
 		
 	}
 
 	@Override
-	public void update(Job job) {
-		Transaction t=session.beginTransaction();
-		session.update(job);
-		t.commit();
+	public void updateJobs(Job job) {
+		try
+		{
+			beginTx();
+			getCurrentSession().update(job);
+			commitTransaction();
+			System.out.println("Debug: Job  having ID: " + job.getJobId() + " has been updated successfully.");
+		}
+		catch (HibernateException hbexc) 
+		{
+			hbexc.printStackTrace();
+		}
 		
 	}
 
 	@Override
-	public void delete(Job job) {
-		Transaction t=session.beginTransaction();
-		session.delete(job);
-		t.commit();
+	public void deleteJobs(Job job) {
+		try
+		{
+			beginTx();
+			getCurrentSession().delete(job);
+			commitTransaction();
+			System.out.println("Debug: Job  having ID: " + job.getJobId() + " has been updated successfully.");
+		}
+		catch (HibernateException hbexc) 
+		{
+			hbexc.printStackTrace();
+		}
 		
 	}
 

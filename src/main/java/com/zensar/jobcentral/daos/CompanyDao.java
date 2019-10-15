@@ -11,12 +11,11 @@ import java.util.List;
  *
  */
 import com.zensar.jobcentral.entities.Company;
-import com.zensar.jobcentral.entities.Login;
 
 public interface CompanyDao {
-	List<Company>getAll();
-	Company getById(int companyId);
-	void insert(Company company);
-	void update(Company company);
-	void delete(Company company);
+	List<Company>getAllCompanies();
+	Company getByCompanyId(int companyId);
+	void insertCompany(Company company);
+	void updateCompany(Company company);
+	void deleteCompany(int companyId);
 }

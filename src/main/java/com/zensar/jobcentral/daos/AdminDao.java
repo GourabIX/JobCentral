@@ -14,11 +14,11 @@ import com.zensar.jobcentral.entities.Admin;
 
 public interface AdminDao {
 	
-List <Admin>getAll();
-Admin getById(int userId);
-void insert(Admin admin);
-void update(Admin admin);
-void delete(Admin admin);
+    List <Admin>getAllAdmins();
+    Admin getByAdminId(int adminId);
+    void insertAdmin(Admin admin);
+    void updateAdmin(Admin admin);
+    void deleteAdmin(int adminId);
 	
 	
 }
