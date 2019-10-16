@@ -15,15 +15,20 @@ import com.zensar.jobcentral.entities.Employer;
 import com.zensar.jobcentral.entities.Login;
 import com.zensar.jobcentral.exceptions.EmployerException;
 import com.zensar.jobcentral.exceptions.LoginException;
+import com.zensar.jobcentral.exceptions.ServiceException;
 import com.zensar.jobcentral.services.CompanyServiceImpl;
 import com.zensar.jobcentral.services.EmployerServiceImpl;
+import com.zensar.jobcentral.services.LoginServiceImpl;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
+@RestController
 public class EmployerController
 {
 
@@ -34,7 +39,7 @@ public class EmployerController
     CompanyServiceImpl companyServiceImpl;
 
     @Autowired
-    UserAuthController userAuthController;
+    LoginServiceImpl loginServiceImpl;
 
     // Employer Registration control is already taken care of in UserRegController.
     // Employer Login control is already taken care of in UserLoginController.
@@ -55,12 +60,12 @@ public class EmployerController
                 if (companyServiceImpl.findCompanyByName(companyName) != null)
                 {
                     company = companyServiceImpl.findCompanyByName(companyName);
-                    company.setCompanyName(companyName);
-                    companyServiceImpl.updateCompany(company);
                 }
                 else
                 {
                     company.setCompanyName(companyName);
+                    company.setLocations(null);
+                    company.setJobs(null);
                     companyServiceImpl.insertCompany(company);
                 }
 
@@ -115,9 +120,11 @@ public class EmployerController
     {
         try 
         {
-			if (employerServiceImpl.validateUser(login))
+			if (loginServiceImpl.validateUser(login) && login.getRoleType().equals("EMP"))
 			{
+				System.err.println("Debug: Employer credentials verified. Proceeding to account deletion...");
 			    employerServiceImpl.removeEmployer(login.getUserId());
+			    loginServiceImpl.removeUser(login);
                 System.err.println("Debug: Employer account has been deleted successfully.");
                 return "jobcentral_home";
 			}
@@ -130,8 +137,8 @@ public class EmployerController
         catch (EmployerException e)
         {
 			e.printStackTrace();
-		}
-        catch (LoginException e)
+		} 
+        catch (ServiceException e) 
         {
 			e.printStackTrace();
 		}

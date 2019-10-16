@@ -1,0 +1,124 @@
+package com.zensar.jobcentral.controllers;
+
+/**
+ * @author Gourab Sarkar
+ * @modification_date 16 Oct 2019 14:29
+ * @creation_date 16 Oct 2019 14:29
+ * @version 0.1
+ * @copyright Zensar Technologies 2019. All Rights Reserved.
+ * @description This is the JobSeeker Personal Controller class which is a part of Business layer of the application.
+ */
+
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.zensar.jobcentral.entities.JobSeekerPersonal;
+import com.zensar.jobcentral.entities.Login;
+import com.zensar.jobcentral.exceptions.ServiceException;
+import com.zensar.jobcentral.services.JobSeekerPersonalServicesImpl;
+import com.zensar.jobcentral.services.LoginServiceImpl;
+
+@RestController
+public class JobSeekerPersonalController {
+	
+	@Autowired
+	private JobSeekerPersonalServicesImpl jobSeekerPersonalServicesImpl;
+	
+	@Autowired
+	private LoginServiceImpl loginServiceImpl;
+	
+    // JobSeeker Registration control is already taken care of in UserRegController.
+    // JobSeeker Login control is already taken care of in UserLoginController.
+	
+	@PutMapping("/jobseekers/personal/update")
+	public String updateJobSeekerPersonalDetails(@RequestParam("uname") String username, @RequestParam("name") String name, @RequestParam("dob") Date dob, @RequestParam("mobile") long mobile)
+	{
+		try
+		{
+			if (jobSeekerPersonalServicesImpl.findJobSeekerByUsername(username) != null)
+			{
+				JobSeekerPersonal jobSeekerPersonalUpdated = new JobSeekerPersonal();
+				jobSeekerPersonalUpdated.setName(name);
+				jobSeekerPersonalUpdated.setMobile(mobile);
+				jobSeekerPersonalUpdated.setDob(dob);
+				jobSeekerPersonalServicesImpl.update(jobSeekerPersonalUpdated);
+				System.err.println("Debug: JobSeeker personal details successfully updated.");
+				return "jobseeker_home";
+			}
+			else
+			{
+				System.err.println("Debug: No such user with username: " + username + " exists in the database!");
+				return "jobSeekers/personal/update";
+			}
+		}
+		catch (Exception jsexc)
+		{
+			jsexc.printStackTrace();
+		}
+		return "errorPage";
+	}
+	
+	@DeleteMapping("/jobseekers/personal/delete")
+	public String deleteJobSeekerPersonalDetails(@RequestBody Login login, @RequestBody JobSeekerPersonal jobSeekerPersonal)
+	{
+		try
+		{
+			if (loginServiceImpl.validateUser(login) && login.getRoleType().equals("JSK"))
+			{
+				System.err.println("Debug: Job Seeker credentials verified. Proceeding to account deletion...");
+				jobSeekerPersonalServicesImpl.remove(jobSeekerPersonal);
+				loginServiceImpl.removeUser(login);
+				System.err.println("Debug: Job Seeker account has been deleted successfully.");
+                return "jobcentral_home";
+			}
+            else
+            {
+                System.err.println("Debug: Employer has entered invalid credentials.");
+                return "jobSeeker/personal/delete";
+            }
+		}
+		catch (ServiceException svcEx)
+		{
+			svcEx.printStackTrace();
+		}
+		return "errorPage";
+	}
+	
+	@GetMapping("jobseekers/all")
+    public List<JobSeekerPersonal> findAllJobSeekers()
+    {
+		try
+		{
+			return jobSeekerPersonalServicesImpl.findAllJobSeekerPersonalDetails();
+		}
+		catch (Exception exc)
+		{
+			exc.printStackTrace();
+		}
+		return null;
+    }
+	
+    @GetMapping("/jobseekers/count")
+    public long findEmployerCount()
+    {
+        try 
+        {
+            return jobSeekerPersonalServicesImpl.findAllJobSeekerPersonalDetails().size();
+        }
+        catch (Exception e) 
+        {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+	
+
+}
