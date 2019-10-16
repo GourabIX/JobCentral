@@ -96,9 +96,19 @@ public class CompanyDaoImpl extends DaoAssistant implements CompanyDao {
 		}
 		
 	}
+
+	@Override
+	public Company getByCompanyName(String companyName) {
+		try 
+		{
+			beginTx();
+			return getCurrentSession().get(Company.class, companyName);	
+		}
+		catch (HibernateException hbexc) 
+		{
+			hbexc.printStackTrace();
+		}
+		return null;
+	}
 	
-	
-	
-	
-   
 }

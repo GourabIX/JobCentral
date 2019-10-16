@@ -43,21 +43,21 @@ public class JobServiceImpl implements JobService {
     @Override
 	public Job getByJobCategory(String category) {
 		
-		return jobDao.getByJobCategory(category);
+		return jobDao.getByCategory(category);
 		
 	}
 
     @Override
 	public Job getByJobLocation(int locationId) {
 		
-		return jobDao.getByJobLocation(locationId);
+		return jobDao.getByLocation(locationId);
 		
 	}
 
 	@Override
 	public void insertJob(Job job) {
 		
-        jobDao.insertJob(job);
+        jobDao.insertJobs(job);
         System.out.println("Job "+job.getJobId()+" is Inserted");
 
 	}
@@ -65,7 +65,7 @@ public class JobServiceImpl implements JobService {
 	@Override
 	public void updateJob(Job job) {
 	
-        jobDao.updateJob(job);
+        jobDao.updateJobs(job);
         System.out.println("Job "+job.getJobId()+" is Updated");
 
 	}
@@ -73,7 +73,7 @@ public class JobServiceImpl implements JobService {
 	@Override
 	public void deleteJob(Job job) {
 	
-        jobDao.deleteJob(job);
+        jobDao.deleteJobs(job);
         System.out.println("Job "+job.getJobId()+" is Deleted");
 
 	}

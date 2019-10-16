@@ -22,4 +22,5 @@ public interface CompanyService
 	void insertCompany(Company company);
 	void updateCompany(Company company);
 	void deleteCompany(Company company);
+	Company findCompanyByName(String companyName);
 }

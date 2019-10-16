@@ -29,33 +29,33 @@ public class LocationServiceImpl implements LocationService {
 	@Override
 	public List<Location> getAllLocations() {
 
-		List<Location> list = locationDao.getAll();
+		List<Location> list = locationDao.getAllLocations();
 		return list;
 	}
 
 	@Override
 	public Location findByLocationId(int locationId) {
 		
-		return locationDao.findById(locationId);
+		return locationDao.getByLocationId(locationId);
 	}
 
 	@Override
 	public void insertLocation(Location location) {
 		
-		locationDao.insert(location);
+		locationDao.insertLocation(location);
 
 	}
 
 	@Override
 	public void updateLocation(Location location) {
 		
-		locationDao.update(location);
+		locationDao.updateLocation(location);
 	}
 
 	@Override
 	public void deleteLocation(Location location) {
 		
-		locationDao.delete(location);
+		locationDao.deleteLocation(location);
 	}
 
 }

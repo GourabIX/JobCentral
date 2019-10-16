@@ -18,4 +18,5 @@ public interface CompanyDao {
 	void insertCompany(Company company);
 	void updateCompany(Company company);
 	void deleteCompany(int companyId);
+	Company getByCompanyName(String companyName);
 }

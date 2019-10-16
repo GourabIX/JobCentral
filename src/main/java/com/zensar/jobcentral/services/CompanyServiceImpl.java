@@ -29,35 +29,42 @@ public class CompanyServiceImpl implements CompanyService {
 	@Override
 	public List<Company> getAllCompanies() {
 	
-		List<Company> list = companyDao.getAll();
+		List<Company> list = companyDao.getAllCompanies();
 		return list;
 	}
 
 	@Override
 	public Company findById(int companyId) {
 		
-		return companyDao.findById(companyId);
+		return companyDao.getByCompanyId(companyId);
 		
 	}
 
 	@Override
 	public void insertCompany(Company company) {
 		
-		companyDao.insert(company);
+		companyDao.insertCompany(company);
 
 	}
 
 	@Override
 	public void updateCompany(Company company) {
 	
-		companyDao.update(company);
+		companyDao.updateCompany(company);
 
 	}
 
 	@Override
 	public void deleteCompany(Company company) {
 	
-		companyDao.delete(company);
+		companyDao.deleteCompany(company.getCompanyId());
+
+	}
+
+	@Override
+	public Company findCompanyByName(String companyName) {
+	
+		return companyDao.getByCompanyName(companyName);
 
 	}
 
