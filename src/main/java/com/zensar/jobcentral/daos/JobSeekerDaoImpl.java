@@ -17,8 +17,8 @@ public class JobSeekerDaoImpl extends DaoAssistant implements JobSeekerDao {
 			{
 				beginTx();
 				Query query = getCurrentSession().createQuery("from Company");
-				List<JobSeeker> listOfCompanies =  query.list();
-				return listOfCompanies;
+				List<JobSeeker> listOfJobSeekers =  query.list();
+				return listOfJobSeekers;
 			}
 			catch (HibernateException hbexc) 
 			{
