@@ -22,9 +22,13 @@ public class JobSeekerAcademic {
 	@JoinColumn(name = "jobSeekerId")
 	private JobSeeker jobSeeker;
 	
+	@Column(nullable = false, updatable = true)
 	private int sscYear;
+	@Column(nullable = false, updatable = true)
 	private double sscPercent;
+	@Column(nullable = false, updatable = true)
 	private int hscYear;
+	@Column(nullable = false, updatable = true)
 	private double hscPercent;
 	@Column(nullable = false, updatable = true)
 	private String qualification;
