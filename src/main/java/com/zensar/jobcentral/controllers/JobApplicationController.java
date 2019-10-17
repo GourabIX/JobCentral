@@ -6,12 +6,13 @@ import com.zensar.jobcentral.entities.JobSeekerPersonal;
 import com.zensar.jobcentral.entities.JobSeekerProfessional;
 import com.zensar.jobcentral.services.JobApplicationsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author Sneha Ojha
- * @modification_date 14 Oct 2019 6:23 PM
+ * @modification_date 17 Oct 2019 12:57 PM
  * @creation_date 14 Oct 2019 6:23 PM
  * @version 1.0
  * @copyright Zensar Technologies 2019. All Rights Reserved.
@@ -85,7 +86,7 @@ public class JobApplicationController {
     }
     
     // delete existing job application
-    @PutMapping("/jobseekers/application/update")
+    @DeleteMapping("/jobseekers/application/update")
 	public String deleteApplicationDetails(){
         try
         {
