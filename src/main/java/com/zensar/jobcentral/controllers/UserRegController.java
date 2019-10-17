@@ -1,18 +1,18 @@
 package com.zensar.jobcentral.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
 /**
  * @author Gourab Sarkar
- * @modification_date 15 Oct 2019 02:06
- * @creation_date 15 Oct 2019 02:06
+ * @modification_date 14 Oct 2019 23:26
+ * @creation_date 14 Oct 2019 22:48
  * @version 0.1
  * @copyright Zensar Technologies 2019. All Rights Reserved.
  * @description This is the User Registration Controller class which is a part of Business layer of the application.
  */
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.zensar.jobcentral.entities.Employer;
 import com.zensar.jobcentral.entities.Login;
