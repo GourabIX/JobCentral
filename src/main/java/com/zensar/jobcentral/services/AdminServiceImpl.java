@@ -13,9 +13,11 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 public class AdminServiceImpl implements AdminService {
+	private String userCode;
 
 	public boolean isEmployerValid(Employer employer,Company company) 
 	{
+		
 
 		//	mail verification code starts
 
@@ -84,7 +86,7 @@ public class AdminServiceImpl implements AdminService {
 
 		String name1=name.substring(0, 3);
 
-		int con=employer.getContact();
+		long con=employer.getContact();
 
 		String str= Integer.toString(con);
 
