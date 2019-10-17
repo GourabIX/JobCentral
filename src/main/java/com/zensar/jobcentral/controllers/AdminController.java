@@ -1,10 +1,8 @@
 package com.zensar.jobcentral.controllers;
 
-import java.util.Properties;
 import com.zensar.jobcentral.entities.Company;
 import com.zensar.jobcentral.entities.Employer;
 import com.zensar.jobcentral.services.AdminService;
-import com.zensar.jobcentral.services.AdminServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,13 +16,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class AdminController{
     @Autowired
     private AdminService adminService;
+    
     @RequestMapping("employer")
-    public boolean isEmployerValid(Employer employer, Company company){
-        
-		return false;
-
+    public boolean employerValid(Employer employer, Company company){
+        boolean result = adminService.isEmployerValid(employer,company);
+		return result;
         } 
-    public String getUniqueCode(Employer employer){
-		return null;
+    public String uniqueCode(Employer employer){
+        String code = adminService.getUniqueCode(employer);
+		return code;
 	    }
 	}

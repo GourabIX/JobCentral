@@ -64,7 +64,6 @@ public class AdminServiceImpl implements AdminService {
 			mex.printStackTrace();
 		}
 
-		String c1=getUniqueCode(employer);
 		// sendEmail(c1, otherArgs...);
 		System.out.println("enter your code");
 		
