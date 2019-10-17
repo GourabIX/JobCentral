@@ -2,12 +2,10 @@ package com.zensar.jobcentral.daos;
 
 import java.util.List;
 
-import javax.persistence.Query;
+import org.hibernate.HibernateException;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
+import org.springframework.stereotype.Repository;
 
 import com.zensar.jobcentral.entities.Admin;
 
@@ -20,48 +18,85 @@ import com.zensar.jobcentral.entities.Admin;
  * @description it is a daoimpl class using persistance layer
  *
  */
-public class AdminDaoImpl implements AdminDao {
+@Repository
+public class AdminDaoImpl extends DaoAssistant implements AdminDao {
 
-	private Session session;
-	public AdminDaoImpl() {
-		Configuration c=new Configuration().configure();
-		SessionFactory f= c.buildSessionFactory();
-		session=f.openSession();
-
-	}
+	
 	@Override
-	public List<Admin> getAll() {
+	public List<Admin> getAllAdmins() {
 		
-		Query q=session.createQuery("from Admin");
-		return q.getResultList();
+		try 
+		{
+			beginTx();
+			Query query = getCurrentSession().createQuery("From Admin");
+			List<Admin> listOfAdmin = query.list();
+			return listOfAdmin;
+		}
+		catch (HibernateException hbexc) 
+		{
+			hbexc.printStackTrace();
+		}
+		return null;
 	}
 
 	@Override
-	public Admin getById(int userId) {
-		return session.get(Admin.class, userId);
+	public Admin getByAdminId(int adminId) {
+		try {
+			beginTx();
+			return getCurrentSession().get(Admin.class, adminId);
+		}
+		catch (HibernateException hbexc) 
+		{
+			hbexc.printStackTrace();
+		}
+		return null;
 	}
 
 	@Override
-	public void insert(Admin admin) {
-		Transaction t=session.beginTransaction();
-		session.save(admin);
-		t.commit();
+	public void insertAdmin(Admin admin) {
+		try
+		{
+			beginTx();
+			getCurrentSession().save(admin);
+			commitTransaction();
+			System.out.println("Debug: Admin having ID: " + admin.getAdminId() + " has been saved successfully.");
+		}
+		catch (HibernateException hbexc) 
+		{
+			hbexc.printStackTrace();
+		}
 		
 		
 	}
 
 	@Override
-	public void update(Admin admin) {
-		Transaction t1=session.beginTransaction();
-		 session.update(admin);
-		t1.commit();
+	public void updateAdmin(Admin admin) {
+		try
+		{
+			beginTx();
+			getCurrentSession().update(admin);
+			commitTransaction();
+			System.out.println("Debug: Admin having ID: " + admin.getAdminId() + " has been updated successfully.");
+		}
+		catch (HibernateException hbexc) 
+		{
+			hbexc.printStackTrace();
+		}
 	}
 
 	@Override
-	public void delete(Admin admin) {
-		Transaction t2=session.beginTransaction();
-		 session.delete(admin);
-		t2.commit();
+	public void deleteAdmin(int adminId) {
+		try
+		{
+			beginTx();
+			getCurrentSession().delete(getByAdminId(adminId));;
+			commitTransaction();
+			System.out.println("Debug: admin having ID: " + adminId+ " has been deleted successfully.");
+		}
+		catch (HibernateException hbexc) 
+		{
+			hbexc.printStackTrace();
+		}
 		
 	}
 

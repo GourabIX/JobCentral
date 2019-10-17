@@ -1,10 +1,6 @@
 package com.zensar.jobcentral.services;
 
 import java.util.Properties;
-import com.zensar.jobcentral.entities.Company;
-import com.zensar.jobcentral.entities.Employer;
-import java.util.*;
-import javax.activation.*;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
@@ -12,12 +8,14 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import com.zensar.jobcentral.entities.Company;
+import com.zensar.jobcentral.entities.Employer;
+
 public class AdminServiceImpl implements AdminService {
 	private String userCode;
 
 	public boolean isEmployerValid(Employer employer,Company company) 
 	{
-		
 
 		//	mail verification code starts
 
@@ -68,13 +66,16 @@ public class AdminServiceImpl implements AdminService {
 
 		String c1=getUniqueCode(employer);
 		// sendEmail(c1, otherArgs...);
-		System.out.println("enter your pincode");
+		System.out.println("enter your code");
 		
-		if(userCode.equals(c1)) {
-			return true;
-		}
-		else 
-			return false;
+		// TODO: Enable after deciding the UI employer verification page.
+		// if(userCode.equals(c1)) {
+		// 	return true;
+		// }
+		// else 
+		// 	return false;
+
+		return false;
 	}
 
 
@@ -88,7 +89,7 @@ public class AdminServiceImpl implements AdminService {
 
 		long con=employer.getContact();
 
-		String str= Integer.toString(con);
+		String str= Long.toString(con);
 
 		String str1=str.substring(6);
 
