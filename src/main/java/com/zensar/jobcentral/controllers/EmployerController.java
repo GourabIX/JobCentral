@@ -14,7 +14,6 @@ import com.zensar.jobcentral.entities.Company;
 import com.zensar.jobcentral.entities.Employer;
 import com.zensar.jobcentral.entities.Login;
 import com.zensar.jobcentral.exceptions.EmployerException;
-import com.zensar.jobcentral.exceptions.LoginException;
 import com.zensar.jobcentral.exceptions.ServiceException;
 import com.zensar.jobcentral.services.CompanyServiceImpl;
 import com.zensar.jobcentral.services.EmployerServiceImpl;

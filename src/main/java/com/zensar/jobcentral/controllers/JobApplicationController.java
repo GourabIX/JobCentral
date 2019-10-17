@@ -1,7 +1,12 @@
 package com.zensar.jobcentral.controllers;
 
 import com.zensar.jobcentral.entities.JobApplications;
+import com.zensar.jobcentral.entities.JobSeekerAcademic;
+import com.zensar.jobcentral.entities.JobSeekerPersonal;
+import com.zensar.jobcentral.entities.JobSeekerProfessional;
 import com.zensar.jobcentral.services.JobApplicationsServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -17,21 +22,89 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class JobApplicationController {
 
+    @Autowired
     private JobApplicationsServiceImpl jobApplicationsServiceImpl;
+
+    @Autowired
     private JobApplications jobApplication;
 
-    public void jobApplication(){
+    @Autowired 
+    private JobSeekerAcademic jobSeekerAcademic;
 
-    // apply for job
-    jobApplicationsServiceImpl.insertJobApplication(jobApplication);
-    System.out.println("insert is done");
+    @Autowired 
+    private JobSeekerPersonal jobSeekerPersonal;
+
+    @Autowired 
+    private JobSeekerProfessional jobSeekerProfessional;
+
+    // this method is for apply job when details are pre filled
+    @PutMapping("/jobseekers/application/insert")
+	public String insertApplicationDetails()
+	{
+        try{
+            if(jobSeekerAcademic.getJobSeekerAcademicId()==0 && jobSeekerPersonal.getJobSeekerPersonalId()==0 && jobSeekerProfessional.getJobSeekerProfessionalId()== 0) 
+            {
+                jobApplicationsServiceImpl.insertJobApplication(jobApplication);
+                System.out.println("debug: insert is done");
+                return "/jobseekers/application/insert";
+            }
+            else
+            {
+                System.err.println("Debug: jobseeker with id already exists in the database!");
+				return "jobSeekers/application/update";
+            }
+        }
+        catch(Exception ee)
+        {
+            ee.printStackTrace();
+        }
+        return "errorPage";
+    }
     
-    // update job application
-    jobApplicationsServiceImpl.updateJobApplication(jobApplication);
-    System.out.println("update is done");
+    // update existing job application
+    @PutMapping("/jobseekers/application/update")
+	public String updateApplicationDetails(){
+        try{
+            if(jobSeekerAcademic.getJobSeekerAcademicId()!=0 && jobSeekerPersonal.getJobSeekerPersonalId()!=0 && jobSeekerProfessional.getJobSeekerProfessionalId()!= 0) 
+            {
+                jobApplicationsServiceImpl.updateJobApplication(jobApplication);
+                System.out.println("debug: update is done");
+                return "/jobseekers/application/update";
+            }
+            else
+            {
+                System.err.println("Debug: jobseeker with id do not exists in the database!");
+				return "/jobSeekers/application/insert";
+            }
+        }
+        catch(Exception ee){
+            ee.printStackTrace();
+        }
+
+       return "errorPage";
+    }
     
-    // delete job application
-    jobApplicationsServiceImpl.deleteJobApplication(jobApplication);
-    System.out.println("delete is done");
+    // delete existing job application
+    @PutMapping("/jobseekers/application/update")
+	public String deleteApplicationDetails(){
+        try
+        {
+            if(jobSeekerAcademic.getJobSeekerAcademicId()!=0 && jobSeekerPersonal.getJobSeekerPersonalId()!=0 && jobSeekerProfessional.getJobSeekerProfessionalId()!= 0) 
+            {
+                jobApplicationsServiceImpl.deleteJobApplication(jobApplication);
+                System.out.println("debug: delete is done");
+                return "/jobseekers/application/insert";
+            }
+            else
+            {
+                System.err.println("Debug: jobseeker with id do not exists in the database!");
+				return "/jobSeekers/application/insert";
+            }
+        }
+        catch(Exception ee)
+        {
+            ee.printStackTrace();
+        }
+        return "errorPage";
     }
 }
