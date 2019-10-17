@@ -25,6 +25,7 @@ public class JobSeekerProfessional {
 	@JoinColumn(name = "jobSeekerId")
 	private JobSeeker jobSeeker;
 	
+	@Column(nullable = false, updatable = true)
 	private String lastRole;
 	private Date fromDateLastRole;
 	private Date toDateLastRole;
