@@ -19,5 +19,5 @@ public interface JobSeekerAcademicServices {
     void update(JobSeekerAcademic jobSeekerAcademic);
     void remove(JobSeekerAcademic jobSeekerAcademic);
     JobSeekerAcademic findJobSeekerAcademicByUsername(String username);
-    List<JobSeekerAcademic> findAllJobSeeker();
+    List<JobSeekerAcademic> findAllJobSeekerAcademicDetails();
 }

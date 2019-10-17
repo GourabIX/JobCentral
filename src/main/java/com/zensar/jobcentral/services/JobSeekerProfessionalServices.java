@@ -18,5 +18,5 @@ public interface JobSeekerProfessionalServices {
     void update(JobSeekerProfessional jobSeekerProfessional);
     void remove(JobSeekerProfessional jobSeekerProfessional);
     JobSeekerProfessional findJobSeekerProfessionalByUsername(String username);
-    List<JobSeekerProfessional> findAllJobSeekerProfessional();
+    List<JobSeekerProfessional> findAllJobSeekerProfessionalDetails();
 }

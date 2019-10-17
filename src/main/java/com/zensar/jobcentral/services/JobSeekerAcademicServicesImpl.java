@@ -39,7 +39,7 @@ public class JobSeekerAcademicServicesImpl implements JobSeekerAcademicServices 
     }
 
     @Override
-    public List<JobSeekerAcademic> findAllJobSeeker() {
+    public List<JobSeekerAcademic> findAllJobSeekerAcademicDetails() {
         // TODO Auto-generated method stub
         return jobSeekerAcademicDao.getAll();
     }

@@ -39,7 +39,7 @@ public class JobSeekerProfessionalServicesImpl implements JobSeekerProfessionalS
     }
 
     @Override
-    public List<JobSeekerProfessional> findAllJobSeekerProfessional() {
+    public List<JobSeekerProfessional> findAllJobSeekerProfessionalDetails() {
         // TODO Auto-generated method stub
         return jobSeekerProfessionalDao.getAll();
     }

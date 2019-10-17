@@ -1,6 +1,7 @@
 package com.zensar.jobcentral.entities;
 
 import java.sql.Blob;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,8 +26,8 @@ public class JobSeekerProfessional {
 	private JobSeeker jobSeeker;
 	
 	private String lastRole;
-	private int fromDateLastRole;
-	private int toDateLastRole;
+	private Date fromDateLastRole;
+	private Date toDateLastRole;
 	@Column(nullable = false, updatable = true)
 	private String skillset;
 	@Column(nullable = false, updatable = true)
@@ -56,19 +57,19 @@ public class JobSeekerProfessional {
 		this.lastRole = lastRole;
 	}
 	
-	public int getFromDateLastRole() {
+	public Date getFromDateLastRole() {
 		return fromDateLastRole;
 	}
 	
-	public void setFromDateLastRole(int fromDateLastRole) {
+	public void setFromDateLastRole(Date fromDateLastRole) {
 		this.fromDateLastRole = fromDateLastRole;
 	}
 	
-	public int getToDateLastRole() {
+	public Date getToDateLastRole() {
 		return toDateLastRole;
 	}
 	
-	public void setToDateLastRole(int toDateLastRole) {
+	public void setToDateLastRole(Date toDateLastRole) {
 		this.toDateLastRole = toDateLastRole;
 	}
 	

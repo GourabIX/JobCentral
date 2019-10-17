@@ -81,7 +81,7 @@ public class JobSeekerPersonalController {
 			}
             else
             {
-                System.err.println("Debug: Employer has entered invalid credentials.");
+                System.err.println("Debug: JobSeeker has entered invalid credentials.");
                 return "jobSeeker/personal/delete";
             }
 		}
@@ -106,19 +106,7 @@ public class JobSeekerPersonalController {
 		return null;
     }
 	
-    @GetMapping("/jobseekers/count")
-    public long findEmployerCount()
-    {
-        try 
-        {
-            return jobSeekerPersonalServicesImpl.findAllJobSeekerPersonalDetails().size();
-        }
-        catch (Exception e) 
-        {
-            e.printStackTrace();
-        }
-        return 0;
-    }
+
 	
 
 }
