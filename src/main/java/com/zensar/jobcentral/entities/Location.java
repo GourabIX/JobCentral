@@ -1,5 +1,14 @@
 package com.zensar.jobcentral.entities;
 
+/**
+ * @author Gourab Sarkar
+ * @modification_date 12 Oct 2019 20:08
+ * @creation_date 01 Oct 2019 21:02
+ * @version 0.1
+ * @copyright Zensar Technologies 2019. All Rights Reserved.
+ * @description This is the persistent Location Class (operates in Persistence layer)
+ */
+
 import java.util.List;
 
 /**

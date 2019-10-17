@@ -11,7 +11,7 @@ package com.zensar.jobcentral.controllers;
 
 import com.zensar.jobcentral.entities.Login;
 import com.zensar.jobcentral.exceptions.ServiceException;
-import com.zensar.jobcentral.services.LoginServiceImpl;
+import com.zensar.jobcentral.services.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserAuthController {
 
     @Autowired
-    private LoginServiceImpl loginServiceImpl;
+    private LoginService loginService;
 
     @PostMapping("/login")
     public String loginGateway(@RequestParam("uname") String username, @RequestParam("passwd") String password) 
@@ -31,12 +31,12 @@ public class UserAuthController {
             Login login = new Login();
             login.setUsername(username);
             login.setPassword(password);
-            String userRole = loginServiceImpl.findUserRoleTypeByUsername(login.getUsername());
+            String userRole = loginService.findUserRoleTypeByUsername(login.getUsername());
 
             if (userRole.equalsIgnoreCase("JSK"))
             {
                 login.setRoleType("JSK");                   // Attach UserRoleType tag to current user trying to login.
-                if (loginServiceImpl.validateUser(login))
+                if (loginService.validateUser(login))
                 {
                     System.err.println("Debug: Login Succeeded as JobSeeker. Redirecting to JobSeeker Home page...");
                     return "jobSeeker_home";            // use viewResolver to resolve mapping to .html page.
@@ -45,7 +45,7 @@ public class UserAuthController {
             else if (userRole.equalsIgnoreCase("EMP"))
             {
                 login.setRoleType("EMP");
-                if (loginServiceImpl.validateUser(login))
+                if (loginService.validateUser(login))
                 {
                     System.err.println("Debug: Login Succeeded as Employer. Redirecting to Employer Home page...");
                     return "employer_home";
@@ -54,7 +54,7 @@ public class UserAuthController {
             else if (userRole.equalsIgnoreCase("ADM"))
             {
                 login.setRoleType("ADM");
-                if (loginServiceImpl.validateUser(login))
+                if (loginService.validateUser(login))
                 {
                     System.err.println("Debug: Login Succeeded as Admin. Redirecting to Admin Home page...");
                     return "admin_home";

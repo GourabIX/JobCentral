@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Transactional
-public class JobSeekerPersonalServicesImpl implements JobSeekerPersonalService {
+public class JobSeekerPersonalServices implements JobSeekerPersonalService {
 
 	private JobSeekerPersonalDao jobSeekerPersonalDao;
 

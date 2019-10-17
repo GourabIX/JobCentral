@@ -13,16 +13,6 @@ import java.sql.Blob;
 import java.util.Date;
 import java.util.List;
 
-import com.zensar.jobcentral.entities.JobSeekerAcademic;
-import com.zensar.jobcentral.entities.JobSeekerPersonal;
-import com.zensar.jobcentral.entities.JobSeekerProfessional;
-import com.zensar.jobcentral.entities.Login;
-import com.zensar.jobcentral.exceptions.ServiceException;
-import com.zensar.jobcentral.services.JobSeekerAcademicServicesImpl;
-import com.zensar.jobcentral.services.JobSeekerPersonalServicesImpl;
-import com.zensar.jobcentral.services.JobSeekerProfessionalServicesImpl;
-import com.zensar.jobcentral.services.LoginServiceImpl;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,21 +21,36 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.zensar.jobcentral.entities.JobSeeker;
+import com.zensar.jobcentral.entities.JobSeekerAcademic;
+import com.zensar.jobcentral.entities.JobSeekerPersonal;
+import com.zensar.jobcentral.entities.JobSeekerProfessional;
+import com.zensar.jobcentral.entities.Login;
+import com.zensar.jobcentral.exceptions.ServiceException;
+import com.zensar.jobcentral.services.JobSeekerAcademicServices;
+import com.zensar.jobcentral.services.JobSeekerPersonalServices;
+import com.zensar.jobcentral.services.JobSeekerProfessionalServices;
+import com.zensar.jobcentral.services.JobSeekerService;
+import com.zensar.jobcentral.services.LoginService;
+
 @RestController
 public class JobSeekerController 
 {
 
     @Autowired
-    private JobSeekerAcademicServicesImpl jobSeekerAcademicServicesImpl;
+    private JobSeekerAcademicServices jobSeekerAcademicServices;
 
     @Autowired
-    private JobSeekerPersonalServicesImpl jobSeekerPersonalServicesImpl;
+    private JobSeekerPersonalServices jobSeekerPersonalServices;
 
     @Autowired
-    private JobSeekerProfessionalServicesImpl jobSeekerProfessionalServicesImpl;
+    private JobSeekerProfessionalServices jobSeekerProfessionalServices;
+    
+    @Autowired
+    private JobSeekerService jobSeekerService;
 
     @Autowired
-    private LoginServiceImpl loginServiceImpl;
+    private LoginService loginService;
 
     // JobSeeker Registration control is already taken care of in UserRegController.
     // JobSeeker Login control is already taken care of in UserLoginController.
@@ -55,13 +60,13 @@ public class JobSeekerController
 	{
 		try
 		{
-			if (jobSeekerPersonalServicesImpl.findJobSeekerByUsername(username) != null)
+			if (jobSeekerPersonalServices.findJobSeekerByUsername(username) != null)
 			{
 				JobSeekerPersonal jobSeekerPersonalUpdated = new JobSeekerPersonal();
 				jobSeekerPersonalUpdated.setName(name);
 				jobSeekerPersonalUpdated.setMobile(mobile);
 				jobSeekerPersonalUpdated.setDob(dob);
-				jobSeekerPersonalServicesImpl.update(jobSeekerPersonalUpdated);
+				jobSeekerPersonalServices.update(jobSeekerPersonalUpdated);
 				System.err.println("Debug: JobSeeker personal details successfully updated.");
 				return "jobseeker_home";
 			}
@@ -83,7 +88,7 @@ public class JobSeekerController
     {
         try
         {
-            if (jobSeekerAcademicServicesImpl.findJobSeekerAcademicByUsername(username) != null)
+            if (jobSeekerAcademicServices.findJobSeekerAcademicByUsername(username) != null)
             {
                 JobSeekerAcademic jobSeekerAcademicUpdated = new JobSeekerAcademic();
                 jobSeekerAcademicUpdated.setSscYear(sscYear);
@@ -94,7 +99,7 @@ public class JobSeekerController
                 jobSeekerAcademicUpdated.setQualificationYear(qualificationYear);
                 jobSeekerAcademicUpdated.setCgpa(cgpa);
                 jobSeekerAcademicUpdated.setSummary(summary);
-                jobSeekerAcademicServicesImpl.update(jobSeekerAcademicUpdated);
+                jobSeekerAcademicServices.update(jobSeekerAcademicUpdated);
                 System.err.println("Debug: JobSeeker academic details have successfully updated.");
 				return "jobseeker_home";
 			}
@@ -116,7 +121,7 @@ public class JobSeekerController
     {
         try
         {
-            if (jobSeekerProfessionalServicesImpl.findJobSeekerProfessionalByUsername(username) != null)
+            if (jobSeekerProfessionalServices.findJobSeekerProfessionalByUsername(username) != null)
             {
                 JobSeekerProfessional jobSeekerProfessionalUpdated = new JobSeekerProfessional();
                 jobSeekerProfessionalUpdated.setLastRole(lastRole);
@@ -124,7 +129,7 @@ public class JobSeekerController
                 jobSeekerProfessionalUpdated.setToDateLastRole(toDateLastRole);
                 jobSeekerProfessionalUpdated.setSkillset(skillset);
                 jobSeekerProfessionalUpdated.setResume(resume);
-                jobSeekerProfessionalServicesImpl.update(jobSeekerProfessionalUpdated);
+                jobSeekerProfessionalServices.update(jobSeekerProfessionalUpdated);
                 System.err.println("Debug: JobSeeker professional details have successfully updated.");
                 return "jobseeker_home";
             }
@@ -146,13 +151,13 @@ public class JobSeekerController
     {
         try
         {
-            if (loginServiceImpl.validateUser(login) && login.getRoleType().equals("JSK"))
+            if (loginService.validateUser(login) && login.getRoleType().equals("JSK"))
             {
                 System.err.println("Debug: Job Seeker credentials verified. Proceeding to account deletion...");
-				jobSeekerAcademicServicesImpl.remove(jobSeekerAcademic);
-                jobSeekerPersonalServicesImpl.remove(jobSeekerPersonal);
-                jobSeekerProfessionalServicesImpl.remove(jobSeekerProfessional);
-				loginServiceImpl.removeUser(login);
+				jobSeekerAcademicServices.remove(jobSeekerAcademic);
+                jobSeekerPersonalServices.remove(jobSeekerPersonal);
+                jobSeekerProfessionalServices.remove(jobSeekerProfessional);
+				loginService.removeUser(login);
 				System.err.println("Debug: Job Seeker account has been deleted successfully.");
                 return "jobcentral_home";
 			}
@@ -174,7 +179,7 @@ public class JobSeekerController
     {
         try 
         {
-            return jobSeekerPersonalServicesImpl.findAllJobSeekerPersonalDetails().size();
+            return jobSeekerPersonalServices.findAllJobSeekerPersonalDetails().size();
         }
         catch (Exception e) 
         {
@@ -183,12 +188,12 @@ public class JobSeekerController
         return 0;
     }
 
-    @GetMapping("jobseekers/details/all")
+    @GetMapping("/jobseekers/details/personal")
     public List<JobSeekerPersonal> findAllJobSeekersPersonalDetails()
     {
 		try
 		{
-			return jobSeekerPersonalServicesImpl.findAllJobSeekerPersonalDetails();
+			return jobSeekerPersonalServices.findAllJobSeekerPersonalDetails();
 		}
 		catch (Exception exc)
 		{
@@ -197,12 +202,12 @@ public class JobSeekerController
 		return null;
     }
 
-    @GetMapping(value = "jobseekers/details/all")
+    @GetMapping(value = "/jobseekers/details/academic")
     public List<JobSeekerAcademic> findAllJobSeekersAcademicDetails()
     {
 		try
 		{
-			return jobSeekerAcademicServicesImpl.findAllJobSeekerAcademicDetails();
+			return jobSeekerAcademicServices.findAllJobSeekerAcademicDetails();
 		}
 		catch (Exception exc)
 		{
@@ -211,18 +216,46 @@ public class JobSeekerController
 		return null;
     }
 
-    @GetMapping("jobseekers/details/all")
+    @GetMapping("/jobseekers/details/professional")
     public List<JobSeekerProfessional> findAllJobSeekersProfessionalDetails()
     {
 		try
 		{
-			return jobSeekerProfessionalServicesImpl.findAllJobSeekerProfessionalDetails();
+			return jobSeekerProfessionalServices.findAllJobSeekerProfessionalDetails();
 		}
 		catch (Exception exc)
 		{
 			exc.printStackTrace();
 		}
 		return null;
+    }
+    
+    @GetMapping("/jobseekers/details/all")
+    public List<JobSeeker> findAllJobSeekers() 
+    {
+    	try
+    	{
+    		return jobSeekerService.findAllJobSeekers();
+    	}
+    	catch (Exception exc)
+    	{
+    		exc.printStackTrace();
+    	}
+    	return null;
+	}
+    
+    @GetMapping("/jobseekers/details/individual")
+    public JobSeeker findJobSeekerCompleteDetails(String username)
+    {
+    	try
+    	{
+    		return jobSeekerService.findJobSeekerByUsername(username);
+    	}
+    	catch (Exception exc)
+    	{
+    		exc.printStackTrace();
+    	}
+    	return null;
     }
 
 }
