@@ -20,6 +20,7 @@ public class AdminController{
     private AdminService adminService;
     @RequestMapping("employer")
     public boolean isEmployerValid(Employer employer, Company company){
+        
 		return false;
 
         } 
