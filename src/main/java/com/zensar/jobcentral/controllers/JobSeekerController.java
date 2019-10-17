@@ -50,7 +50,7 @@ public class JobSeekerController
     // JobSeeker Registration control is already taken care of in UserRegController.
     // JobSeeker Login control is already taken care of in UserLoginController.
 
-    @PutMapping("/jobseekers/personal/update")
+    @PutMapping(value = "/jobseekers/personal/update")
 	public String updateJobSeekerPersonalDetails(@RequestParam("uname") String username, @RequestParam("name") String name, @RequestParam("dob") Date dob, @RequestParam("mobile") long mobile)
 	{
 		try
@@ -78,7 +78,7 @@ public class JobSeekerController
 		return "errorPage";
 	}
 	
-	@PutMapping("/jobseekers/academic/update")
+	@PutMapping(value = "/jobseekers/academic/update")
 	public String updateJobSeekerAcademicDetails(@RequestParam("uname") String username, @RequestParam("sscYear") int sscYear, @RequestParam("sscPercent") double sscPercent, @RequestParam("hscYear") int hscYear, @RequestParam("hscPercent") double hscPercent, @RequestParam("qualification") String qualification, @RequestParam("qualificationYear") int qualificationYear, @RequestParam("cgpa") double cgpa, @RequestParam("summary") String summary)
     {
         try
@@ -111,7 +111,7 @@ public class JobSeekerController
 		return "errorPage";
     }
 
-    @PutMapping("/jobSeekers/professional/update")
+    @PutMapping(value = "/jobSeekers/professional/update")
     public String updateJobSeekerProfessionalDetails(@RequestParam("uname") String username, @RequestParam("lastRole") String lastRole, @RequestParam("fromDateLastRole") Date fromDateLastRole, @RequestParam("toDateLastRole") Date toDateLastRole, @RequestParam("skillset") String skillset, @RequestParam("resume") Blob resume)
     {
         try
@@ -197,7 +197,7 @@ public class JobSeekerController
 		return null;
     }
 
-    @GetMapping("jobseekers/details/all")
+    @GetMapping(value = "jobseekers/details/all")
     public List<JobSeekerAcademic> findAllJobSeekersAcademicDetails()
     {
 		try

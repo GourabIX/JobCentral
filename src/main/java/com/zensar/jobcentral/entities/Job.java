@@ -14,6 +14,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -34,7 +35,7 @@ public class Job {
 
 	private String jobName;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "companyId")
 	private Company company;
 	
@@ -47,18 +48,18 @@ public class Job {
 	@Column(nullable = false, updatable = true)
 	private String skillsRequired;
 	
-	@ManyToOne
-	@JoinColumn(name = "userId")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "employerId")
 	private Employer employer;
 	
 	private String category;
 	
 	// We only need the Job Seeker's ID.
-	@ManyToOne
-	@JoinColumn(name = "userId")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "jobSeekerId")
 	private JobSeeker jobSeeker;
 	
-	@OneToOne(mappedBy = "jobs")
+	@ManyToOne
 	@JoinColumn(name = "locationId")
 	private Location location;
 	

@@ -3,6 +3,7 @@ package com.zensar.jobcentral.entities;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -37,7 +38,7 @@ public class JobSeeker {
 	@JoinColumn(name = "userId")
 	private JobSeekerProfessional jobSeekerProfessional;
 	
-	@ManyToOne								// Many JobSeekers can have one location because Location is (City, State, Country)
+	@ManyToOne(fetch = FetchType.LAZY)								// Many JobSeekers can have one location because Location is (City, State, Country)
 	@JoinColumn(name = "locationId")
 	private Location location;
 	

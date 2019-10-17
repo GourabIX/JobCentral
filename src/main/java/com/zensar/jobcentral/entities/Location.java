@@ -12,6 +12,7 @@ import java.util.List;
  */
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -33,10 +34,9 @@ public class Location {
 	private String state;
 	
 	@OneToMany(mappedBy = "location")
-	@JoinColumn(name = "locationId")
-	private Employer employer;
+	private List<Employer> employer;
 	
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.LAZY)
 	private List<Company> companies;
 	
 	@OneToOne(mappedBy = "location")
@@ -49,7 +49,7 @@ public class Location {
 	@OneToMany(mappedBy = "location")
 	private List<JobSeeker> jobSeeker;
 	
-	@OneToMany
+	@OneToMany(mappedBy = "location")
 	private List<Job> jobs;
 
 	public int getLocationId() {
@@ -76,11 +76,11 @@ public class Location {
 		this.state = state;
 	}
 
-	public Employer getEmployer() {
+	public List<Employer> getEmployer() {
 		return employer;
 	}
 
-	public void setEmployer(Employer employer) {
+	public void setEmployer(List<Employer> employer) {
 		this.employer = employer;
 	}
 
