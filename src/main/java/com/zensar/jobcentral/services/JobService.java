@@ -8,8 +8,8 @@ public interface JobService {
 
 	List <Job>getAllJobs();
 	Job getByJobId(int jobId);
-	Job getByJobCategory(String category);
-	Job getByJobLocation(int locationId);
+	List<Job> getByJobCategory(String category);
+	List<Job> getByJobLocation(int locationId);
 	void insertJob(Job job);
 	void updateJob(Job job);
 	void deleteJob(Job job);

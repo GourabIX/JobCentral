@@ -3,8 +3,8 @@ package com.zensar.jobcentral.daos;
 import java.util.List;
 
 import org.hibernate.HibernateException;
-
-import org.hibernate.query.Query;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.zensar.jobcentral.entities.Admin;
@@ -19,18 +19,16 @@ import com.zensar.jobcentral.entities.Admin;
  *
  */
 @Repository
-public class AdminDaoImpl extends DaoAssistant implements AdminDao {
+public class AdminDaoImpl implements AdminDao {
 
+    @Autowired
+    private HibernateTemplate hibernateTemplate;
 	
 	@Override
 	public List<Admin> getAllAdmins() {
-		
-		try 
+		try
 		{
-			beginTx();
-			Query query = getCurrentSession().createQuery("From Admin");
-			List<Admin> listOfAdmin = query.list();
-			return listOfAdmin;
+			return (List<Admin>) hibernateTemplate.find("from Admin");
 		}
 		catch (HibernateException hbexc) 
 		{
@@ -41,9 +39,9 @@ public class AdminDaoImpl extends DaoAssistant implements AdminDao {
 
 	@Override
 	public Admin getByAdminId(int adminId) {
-		try {
-			beginTx();
-			return getCurrentSession().get(Admin.class, adminId);
+		try 
+		{
+			return hibernateTemplate.get(Admin.class, adminId);
 		}
 		catch (HibernateException hbexc) 
 		{
@@ -56,9 +54,7 @@ public class AdminDaoImpl extends DaoAssistant implements AdminDao {
 	public void insertAdmin(Admin admin) {
 		try
 		{
-			beginTx();
-			getCurrentSession().save(admin);
-			commitTransaction();
+			hibernateTemplate.save(admin);
 			System.out.println("Debug: Admin having ID: " + admin.getAdminId() + " has been saved successfully.");
 		}
 		catch (HibernateException hbexc) 
@@ -73,9 +69,7 @@ public class AdminDaoImpl extends DaoAssistant implements AdminDao {
 	public void updateAdmin(Admin admin) {
 		try
 		{
-			beginTx();
-			getCurrentSession().update(admin);
-			commitTransaction();
+			hibernateTemplate.update(admin);
 			System.out.println("Debug: Admin having ID: " + admin.getAdminId() + " has been updated successfully.");
 		}
 		catch (HibernateException hbexc) 
@@ -88,9 +82,7 @@ public class AdminDaoImpl extends DaoAssistant implements AdminDao {
 	public void deleteAdmin(int adminId) {
 		try
 		{
-			beginTx();
-			getCurrentSession().delete(getByAdminId(adminId));;
-			commitTransaction();
+			hibernateTemplate.delete(getByAdminId(adminId));
 			System.out.println("Debug: admin having ID: " + adminId+ " has been deleted successfully.");
 		}
 		catch (HibernateException hbexc) 

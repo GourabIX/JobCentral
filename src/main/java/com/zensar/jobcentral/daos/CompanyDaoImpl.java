@@ -3,8 +3,8 @@ package com.zensar.jobcentral.daos;
 import java.util.List;
 
 import org.hibernate.HibernateException;
-
-import org.hibernate.query.Query;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.zensar.jobcentral.entities.Company;
@@ -19,17 +19,18 @@ import com.zensar.jobcentral.entities.Company;
  * @description it is a daoimpl class using persistance layer
  *
  */
+
 @Repository
-public class CompanyDaoImpl extends DaoAssistant implements CompanyDao {
+public class CompanyDaoImpl implements CompanyDao {
+	
+	@Autowired
+	private HibernateTemplate hibernateTemplate;
 	
 	@Override
 	public List<Company> getAllCompanies() {
 		try 
 		{
-			beginTx();
-			Query query = getCurrentSession().createQuery("From  Company");
-			List<Company> listOfCompanies =  query.list();
-			return listOfCompanies;
+			return (List<Company>) hibernateTemplate.find("from Company");
 		}
 		catch (HibernateException hbexc) 
 		{
@@ -42,8 +43,7 @@ public class CompanyDaoImpl extends DaoAssistant implements CompanyDao {
 	public Company getByCompanyId(int companyId) {
 		try 
 		{
-			beginTx();
-			return getCurrentSession().get(Company.class, companyId);	
+			return hibernateTemplate.get(Company.class, companyId);	
 		}
 		catch (HibernateException hbexc) 
 		{
@@ -55,9 +55,7 @@ public class CompanyDaoImpl extends DaoAssistant implements CompanyDao {
 	public void insertCompany(Company company) {
 		try
 		{
-			beginTx();
-			getCurrentSession().save(company);
-			commitTransaction();
+			hibernateTemplate.save(company);
 			System.out.println("Debug: company having ID: " + company.getCompanyId() + " has been saved successfully.");
 		}
 		catch (HibernateException hbexc) 
@@ -70,9 +68,7 @@ public class CompanyDaoImpl extends DaoAssistant implements CompanyDao {
 	public void updateCompany(Company company) {
 		try
 		{
-			beginTx();
-			getCurrentSession().update(company);
-			commitTransaction();
+			hibernateTemplate.update(company);
 			System.out.println("Debug: company having ID: " +company.getCompanyId() + " has been updated successfully.");
 		}
 		catch (HibernateException hbexc) 
@@ -85,9 +81,7 @@ public class CompanyDaoImpl extends DaoAssistant implements CompanyDao {
 	public void deleteCompany(int companyId) {
 		try
 		{
-			beginTx();
-			getCurrentSession().delete(getByCompanyId(companyId));
-			commitTransaction();
+			hibernateTemplate.delete(getByCompanyId(companyId));
 			System.out.println("Debug: company having ID: " + companyId + " has been deleted successfully.");
 		}
 		catch (HibernateException hbexc) 
@@ -101,8 +95,7 @@ public class CompanyDaoImpl extends DaoAssistant implements CompanyDao {
 	public Company getByCompanyName(String companyName) {
 		try 
 		{
-			beginTx();
-			return getCurrentSession().get(Company.class, companyName);	
+			return hibernateTemplate.get(Company.class, companyName);	
 		}
 		catch (HibernateException hbexc) 
 		{

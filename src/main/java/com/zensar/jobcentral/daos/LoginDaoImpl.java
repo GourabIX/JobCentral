@@ -11,19 +11,23 @@ package com.zensar.jobcentral.daos;
 
 import com.zensar.jobcentral.entities.Login;
 import org.hibernate.HibernateException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class LoginDaoImpl extends DaoAssistant implements LoginDao 
+public class LoginDaoImpl implements LoginDao 
 {
+	
+	@Autowired
+	private HibernateTemplate hibernateTemplate;
 
 	@Override
 	public Login getUserById(int userId) 
 	{
 		try
 		{
-			beginTx();
-			return getCurrentSession().get(Login.class, userId);
+			return hibernateTemplate.get(Login.class, userId);
 		}
 		catch (HibernateException hbexc)
 		{
@@ -37,8 +41,7 @@ public class LoginDaoImpl extends DaoAssistant implements LoginDao
 	{
 		try
 		{
-			beginTx();
-			return getCurrentSession().get(Login.class, username);
+			return hibernateTemplate.get(Login.class, username);
 		}
 		catch (HibernateException hbexc)
 		{
@@ -52,9 +55,7 @@ public class LoginDaoImpl extends DaoAssistant implements LoginDao
 	{
 		try
 		{
-			beginTx();
-			getCurrentSession().save(login);
-			commitTransaction();
+			hibernateTemplate.save(login);
 			System.out.println("Debug: User having ID: " + login.getUserId() + " has been saved successfully.");
 		}
 		catch (HibernateException hbexc)
@@ -68,9 +69,7 @@ public class LoginDaoImpl extends DaoAssistant implements LoginDao
 	{
 		try
 		{
-			beginTx();
-			getCurrentSession().update(login);
-			commitTransaction();
+			hibernateTemplate.update(login);
 			System.out.println("Debug: User having ID: " + login.getUserId() + " has been updated successfully.");
 		}
 		catch (HibernateException hbexc)
@@ -84,9 +83,7 @@ public class LoginDaoImpl extends DaoAssistant implements LoginDao
 	{
 		try
 		{
-			beginTx();
-			getCurrentSession().delete(login);
-			commitTransaction();
+			hibernateTemplate.delete(login);
 			System.out.println("Debug: User having ID: " + login.getUserId() + " has been deleted successfully.");
 		}
 		catch (HibernateException hbexc)

@@ -10,25 +10,27 @@ package com.zensar.jobcentral.daos;
  */
 
 import java.util.List;
-import com.zensar.jobcentral.entities.Employer;
 
 import org.hibernate.HibernateException;
-import org.hibernate.query.Query;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.zensar.jobcentral.entities.Employer;
+
 @Repository
-public class EmployerDaoImpl extends DaoAssistant implements EmployerDao
+public class EmployerDaoImpl implements EmployerDao
 {
+	
+	@Autowired
+	private HibernateTemplate hibernateTemplate;
 
 	@Override
 	public List<Employer> getAllEmployers()
 	{
 		try 
 		{
-			beginTx();
-			Query query = getCurrentSession().createQuery("FROM Employer");
-			List<Employer> listOfEmployers = query.list();
-			return listOfEmployers;
+			return (List<Employer>) hibernateTemplate.find("from Employer");
 		}
 		catch (HibernateException hbexc) 
 		{
@@ -42,8 +44,7 @@ public class EmployerDaoImpl extends DaoAssistant implements EmployerDao
 	{
 		try 
 		{
-			beginTx();
-			return getCurrentSession().get(Employer.class, employerId);	
+			return hibernateTemplate.get(Employer.class, employerId);	
 		}
 		catch (HibernateException hbexc) 
 		{
@@ -57,9 +58,7 @@ public class EmployerDaoImpl extends DaoAssistant implements EmployerDao
 	{
 		try
 		{
-			beginTx();
-			getCurrentSession().save(employer);
-			commitTransaction();
+			hibernateTemplate.save(employer);
 			System.out.println("Debug: Employer having ID: " + employer.getEmployerId() + " has been saved successfully.");
 		}
 		catch (HibernateException hbexc) 
@@ -73,9 +72,7 @@ public class EmployerDaoImpl extends DaoAssistant implements EmployerDao
 	{
 		try
 		{
-			beginTx();
-			getCurrentSession().update(employer);
-			commitTransaction();
+			hibernateTemplate.update(employer);
 			System.out.println("Debug: Employer having ID: " + employer.getEmployerId() + " has been updated successfully.");
 		}
 		catch (HibernateException hbexc) 
@@ -89,9 +86,7 @@ public class EmployerDaoImpl extends DaoAssistant implements EmployerDao
 	{
 		try
 		{
-			beginTx();
-			getCurrentSession().delete(getEmployerById(employerId));
-			commitTransaction();
+			hibernateTemplate.delete(getEmployerById(employerId));
 			System.out.println("Debug: Employer having ID: " + employerId + " has been deleted successfully.");
 		}
 		catch (HibernateException hbexc) 
@@ -105,8 +100,7 @@ public class EmployerDaoImpl extends DaoAssistant implements EmployerDao
 	{
 		try
 		{
-			beginTx();
-			return getCurrentSession().get(Employer.class, username);
+			return hibernateTemplate.get(Employer.class, username);
 		}
 		catch (HibernateException hbexc) 
 		{

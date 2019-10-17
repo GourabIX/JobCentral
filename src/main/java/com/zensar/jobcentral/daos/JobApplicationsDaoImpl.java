@@ -14,20 +14,23 @@ import com.zensar.jobcentral.entities.Company;
 import com.zensar.jobcentral.entities.JobApplications;
 import org.hibernate.HibernateException;
 import org.hibernate.query.Query;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class JobApplicationsDaoImpl extends DaoAssistant implements JobApplicationsDao 
+public class JobApplicationsDaoImpl implements JobApplicationsDao 
 {
+	
+	@Autowired
+	private HibernateTemplate hibernateTemplate;
 	
 	@Override
 	public void deleteJobApplication(JobApplications jobApplication) 
 	{
 		try
 		{
-			beginTx();
-			getCurrentSession().delete(jobApplication);
-			commitTransaction();
+			hibernateTemplate.delete(jobApplication);
 			System.out.println("Debug: Job Application having ID: " + jobApplication.getApplicationId() + " has been deleted successfully.");
 		}
 		catch (HibernateException hbexc)
@@ -41,10 +44,7 @@ public class JobApplicationsDaoImpl extends DaoAssistant implements JobApplicati
 	{
 		try
 		{
-			beginTx();
-			Query query = getCurrentSession().createQuery("FROM JobApplications");
-			List<JobApplications> listOfAllJobApplications = query.list();
-			return listOfAllJobApplications;
+			return (List<JobApplications>) hibernateTemplate.find("from JobApplications");
 		}
 		catch (HibernateException hbexc)
 		{
@@ -58,8 +58,7 @@ public class JobApplicationsDaoImpl extends DaoAssistant implements JobApplicati
 	{
 		try
 		{
-			beginTx();
-			return getCurrentSession().get(JobApplications.class, applicationId);
+			return hibernateTemplate.get(JobApplications.class, applicationId);
 		}
 		catch (HibernateException hbexc) 
 		{
@@ -73,10 +72,8 @@ public class JobApplicationsDaoImpl extends DaoAssistant implements JobApplicati
 	{
 		try
 		{
-			beginTx();
-			Query query = getCurrentSession().createQuery("FROM JobApplications JA WHERE JA.jobId = :jobId");
-			query.setParameter("jobId", jobId);
-			List<JobApplications> listOfJobApplicationsByJobId = query.list();
+			Object[] values = {jobId};
+			List<JobApplications> listOfJobApplicationsByJobId = (List<JobApplications>) hibernateTemplate.find("FROM JobApplications JA WHERE JA.jobId = ?", values);
 			return listOfJobApplicationsByJobId;
 		}
 		catch (HibernateException hbexc) 
@@ -91,10 +88,8 @@ public class JobApplicationsDaoImpl extends DaoAssistant implements JobApplicati
 	{
 		try
 		{
-			beginTx();
-			Query query = getCurrentSession().createQuery("FROM JobApplications JA WHERE JA.companyId = :companyId");
-			query.setParameter("companyId", company.getCompanyId());
-			List<JobApplications> listOfJobApplicationsByCompany = query.list();
+			Object[] params  = {company.getCompanyId()};
+			List<JobApplications> listOfJobApplicationsByCompany = (List<JobApplications>) hibernateTemplate.find("FROM JobApplications JA WHERE JA.companyId = ?", params);
 			return listOfJobApplicationsByCompany;
 		}
 		catch (HibernateException hbexc) 
@@ -109,8 +104,7 @@ public class JobApplicationsDaoImpl extends DaoAssistant implements JobApplicati
 	{
 		try
 		{
-			beginTx();
-			getCurrentSession().save(jobApplication);
+			hibernateTemplate.save(jobApplication);
 			System.out.println("Debug: Job Application having ID: " + jobApplication.getApplicationId() + " has been saved successfully.");
 		}
 		catch (HibernateException hbexc) 
@@ -124,8 +118,7 @@ public class JobApplicationsDaoImpl extends DaoAssistant implements JobApplicati
 	{
 		try
 		{
-			beginTx();
-			getCurrentSession().update(jobApplication);
+			hibernateTemplate.update(jobApplication);
 			System.out.println("Debug: Job Application having ID: " + jobApplication.getApplicationId() + " has been updated successfully.");
 		}
 		catch (HibernateException hbexc) 
