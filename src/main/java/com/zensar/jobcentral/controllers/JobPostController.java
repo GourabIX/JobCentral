@@ -1,8 +1,14 @@
 package com.zensar.jobcentral.controllers;
 
+import java.sql.Clob;
+import java.util.List;
+
 import com.zensar.jobcentral.entities.Job;
+import com.zensar.jobcentral.entities.Location;
 import com.zensar.jobcentral.services.EmployerServiceImpl;
 import com.zensar.jobcentral.services.JobServiceImpl;
+import com.zensar.jobcentral.services.LocationService;
+import com.zensar.jobcentral.services.LocationServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,8 +33,10 @@ import javassist.bytecode.stackmap.BasicBlock.Catch;
      @Autowired
         private JobServiceImpl jobServiceImpl;
 
-     @PostMapping("/jobpost")
-     public String postJob( @RequestParam("jobname") String jobName,  @RequestParam("jobtype") String jobType, @RequestParam("noofvacancies") int numberofVacancies, @RequestParam("jobdesc") String jobDescription,  @RequestParam("jobskills") String skillsRequired, @RequestParam("joblocation") String locationName ) 
+      
+
+     @PostMapping("/jobs/postjob")
+     public String postJob( @RequestParam("jobname") String jobName,  @RequestParam("jobtype") String jobType, @RequestParam("noofvacancies") int numberofVacancies, @RequestParam("jobdesc") Clob jobDescription,  @RequestParam("jobskills") String skillsRequired, @RequestParam("joblocation") String state, @RequestParam("joblocation") String city ) 
      {
        
         Job job = new Job();
@@ -37,14 +45,17 @@ import javassist.bytecode.stackmap.BasicBlock.Catch;
         job.setNumberOfVacancies(numberofVacancies);
         job.setJobDescription(jobDescription);
         job.setSkillsRequired(skillsRequired);
-        job.setLocation(locationName);
+        Location location = new Location();
+        location.setCity(city);
+        location.setState(state);
+        job.setLocation(location);
         jobServiceImpl.insertJob(job);
      
         return "employer_home";
 
 
      }
-
+     @PostMapping("/jobs/deletejobpost")
      public String deleteJob(@RequestParam("jobId") int jobId) 
      {
        try
@@ -69,8 +80,8 @@ import javassist.bytecode.stackmap.BasicBlock.Catch;
         return "errorPage";
       
      }
-
-     public String updateJob(@RequestParam("jobId") int jobId, @RequestParam("jobname") String jobName,  @RequestParam("jobtype") String jobType, @RequestParam("noofvacancies") int numberofVacancies, @RequestParam("jobdesc") String jobDescription,  @RequestParam("jobskills") String skillsRequired, @RequestParam("joblocation") String locationName ) 
+     @PostMapping("/jobs/updatejobpost")
+     public String updateJob(@RequestParam("jobId") int jobId, @RequestParam("jobname") String jobName,  @RequestParam("jobtype") String jobType, @RequestParam("noofvacancies") int numberofVacancies, @RequestParam("jobdesc") Clob jobDescription,  @RequestParam("jobskills") String skillsRequired, @RequestParam("state") String state, @RequestParam("city") String city ) 
      {
        try
        {
@@ -82,7 +93,10 @@ import javassist.bytecode.stackmap.BasicBlock.Catch;
                 job.setNumberOfVacancies(numberofVacancies);
                 job.setJobDescription(jobDescription);
                 job.setSkillsRequired(skillsRequired);
-                job.setLocation(locationName);
+                Location location = new Location();
+                location.setCity(city);
+                location.setState(state);
+                job.setLocation(location);
                 jobServiceImpl.updateJob(jobServiceImpl.getByJobId(jobId));
             }
             else
@@ -101,29 +115,18 @@ import javassist.bytecode.stackmap.BasicBlock.Catch;
       
      }
      
-     
-     public String getAllJob(@RequestParam("jobId") int jobId, @RequestParam("jobname") String jobName,  @RequestParam("jobtype") String jobType, @RequestParam("noofvacancies") int numberofVacancies, @RequestParam("jobdesc") String jobDescription,  @RequestParam("jobskills") String skillsRequired, @RequestParam("joblocation") String location ) 
+     @PostMapping("/jobs/getalljobposts")
+     public List<Job> getAllJob()  
      {
-       try
-       {
-            if(jobServiceImpl.getByJobId(jobId) != null)
-            {
-                jobServiceImpl.getAllJobs(jobServiceImpl.getByJobId(jobId));
-            }
-
-            else
-            {
-                 System.err.println("Debug: No such jobpost exists.Selected post cannot be displayed");
-                 return "employer_home";
-            }
-
+        try
+        {
+            jobServiceImpl.getAllJobs();
         }
-            
        catch (Exception e) 
        {
             e.printStackTrace();
        }
-       return "errorPage";
+       return null;
       
      }
         

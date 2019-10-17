@@ -149,8 +149,8 @@ public class Job {
 		return location;
 	}
 
-	public void setLocation(Location location) {
-		this.location = location;
+	public void setLocation(Location state) {
+		this.location = state;
 	}
 
 	public List<JobApplications> getJobApplications() {
