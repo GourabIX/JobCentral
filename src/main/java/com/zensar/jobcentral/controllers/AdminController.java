@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class AdminController{
     @Autowired
     private AdminService adminService;
-    
+
     @RequestMapping("employer")
     public boolean employerValid(Employer employer, Company company){
         boolean result = adminService.isEmployerValid(employer,company);
@@ -25,5 +25,5 @@ public class AdminController{
     public String uniqueCode(Employer employer){
         String code = adminService.getUniqueCode(employer);
 		return code;
-	    }
-	}
+        }
+}

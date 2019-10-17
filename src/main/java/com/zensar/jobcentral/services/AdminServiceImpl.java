@@ -8,16 +8,19 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import com.zensar.jobcentral.daos.AdminDao;
+import com.zensar.jobcentral.daos.AdminDaoImpl;
+import com.zensar.jobcentral.entities.Admin;
 import com.zensar.jobcentral.entities.Company;
 import com.zensar.jobcentral.entities.Employer;
 
 public class AdminServiceImpl implements AdminService {
 	private String userCode;
+	private AdminDao adminDao=new AdminDaoImpl();
 
-	public boolean isEmployerValid(Employer employer,Company company) 
-	{
+	public boolean isEmployerValid(Employer employer, Company company) {
 
-		//	mail verification code starts
+		// mail verification code starts
 
 		// Recipient's email ID needs to be mentioned.
 		String to = "vejefa@appmaillist.com";
@@ -57,45 +60,69 @@ public class AdminServiceImpl implements AdminService {
 			Transport.send(message);
 			System.out.println("Sent message successfully....");
 
-		} 
+		}
 
-		catch (MessagingException mex) 
-		{
+		catch (MessagingException mex) {
 			mex.printStackTrace();
 		}
 
 		// sendEmail(c1, otherArgs...);
 		System.out.println("enter your code");
-		
+
 		// TODO: Enable after deciding the UI employer verification page.
 		// if(userCode.equals(c1)) {
-		// 	return true;
+		// return true;
 		// }
-		// else 
-		// 	return false;
+		// else
+		// return false;
 
 		return false;
 	}
-
 
 	@Override
 	public String getUniqueCode(Employer employer)
 
 	{
-		String name=employer.getName();
+		String name = employer.getName();
 
-		String name1=name.substring(0, 3);
+		String name1 = name.substring(0, 3);
 
-		long con=employer.getContact();
+		long con = employer.getContact();
 
-		String str= Long.toString(con);
+		String str = Long.toString(con);
 
-		String str1=str.substring(6);
+		String str1 = str.substring(6);
 
-		String str2=name1+str1;		
+		String str2 = name1 + str1;
 
 		return str2;
-	}        
+	}
+
+	@Override
+	public void insert(Admin admin) {
+		// TODO Auto-generated method stub
+         adminDao.insertAdmin(admin);
+
+	}
+
+	@Override
+	public void delete(int adminId) {
+		// TODO Auto-generated method stub
+		adminDao.deleteAdmin(adminId);
+	}
+
+	@Override
+	public void update(Admin admin) {
+		// TODO Auto-generated method stub
+		adminDao.updateAdmin(admin);
+	}
+
+	@Override
+	public Admin getById(int adminId) {
+		// TODO Auto-generated method stub
+		Admin admin = adminDao.getByAdminId(adminId);
+		return admin;
+	}
 }
 
 
