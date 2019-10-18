@@ -2,14 +2,12 @@ package com.zensar.jobcentral.daos;
 
 import java.util.List;
 
-import org.hibernate.HibernateException;
+import com.zensar.jobcentral.entities.Job;
 
-import org.hibernate.query.Query;
+import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.stereotype.Repository;
-
-import com.zensar.jobcentral.entities.Job;
 
 @Repository
 public class JobDaoImpl implements JobDao {

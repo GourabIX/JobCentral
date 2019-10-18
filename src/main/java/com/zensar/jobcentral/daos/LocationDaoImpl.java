@@ -5,7 +5,6 @@ import java.util.List;
 import com.zensar.jobcentral.entities.Location;
 
 import org.hibernate.HibernateException;
-import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.stereotype.Repository;
@@ -86,6 +85,13 @@ public class LocationDaoImpl  implements LocationDao{
 			hbexc.printStackTrace();
 		}
 		
+	}
+
+	@Override
+	public Location getByCityState(String city, String state) 
+	{
+		Object[] values = {city, state};
+		return hibernateTemplate.get(Location.class, values);
 	}
 	
 	

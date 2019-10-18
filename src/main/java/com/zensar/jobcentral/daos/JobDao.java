@@ -2,8 +2,6 @@ package com.zensar.jobcentral.daos;
 
 import java.util.List;
 
-import com.zensar.jobcentral.entities.Admin;
-import com.zensar.jobcentral.entities.Employer;
 import com.zensar.jobcentral.entities.Job;
 
 public interface JobDao {

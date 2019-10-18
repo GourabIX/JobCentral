@@ -10,10 +10,11 @@ package com.zensar.jobcentral.daos;
  */
 
 import java.util.List;
+
 import com.zensar.jobcentral.entities.Company;
 import com.zensar.jobcentral.entities.JobApplications;
+
 import org.hibernate.HibernateException;
-import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.stereotype.Repository;

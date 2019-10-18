@@ -4,7 +4,6 @@ package com.zensar.jobcentral.exceptions;
 public class GenericException extends Exception
 {
 	
-	private String errormessage;
 	
 	public GenericException() 
 	{
@@ -14,7 +13,6 @@ public class GenericException extends Exception
 	public GenericException(String errormessage) 
 	{
 		super(errormessage);
-		this.errormessage = errormessage;
 	}
 	
 }
