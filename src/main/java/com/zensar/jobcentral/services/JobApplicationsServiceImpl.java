@@ -7,6 +7,8 @@ import com.zensar.jobcentral.entities.Company;
 import com.zensar.jobcentral.entities.JobApplications;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Gourab Sarkar
@@ -17,6 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @description This is the JobApplicationsServiceImpl class which implements JobApplicationsService interface and is a part of Business layer of the application.
  */
 
+@Service
+@Transactional
 public class JobApplicationsServiceImpl implements JobApplicationsService
 {
 

@@ -7,6 +7,7 @@ import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.zensar.jobcentral.entities.JobSeekerPersonal;
+import com.zensar.jobcentral.entities.Login;
 
 /**
  * @author Sushma Kumari
@@ -49,9 +50,9 @@ public class JobSeekerPersonalDaoImpl implements JobSeekerPersonalDao {
 	}
 
 	@Override
-	public JobSeekerPersonal getByUsername(String username) {
+	public Login getByUsername(String username) {
 		// TODO Auto-generated method stub
-		return hibernateTemplate.get(JobSeekerPersonal.class, username);
+		return hibernateTemplate.get(Login.class, username);
 	}
 
 	@Override

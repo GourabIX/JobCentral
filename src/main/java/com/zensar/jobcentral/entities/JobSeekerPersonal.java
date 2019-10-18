@@ -19,6 +19,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -36,6 +37,7 @@ public class JobSeekerPersonal {
 	@Column(nullable = false, updatable = true)
 	private String name;
 	@Column(nullable = false, updatable = true)
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date dob;
 	@Column(unique = true , nullable = false, updatable = true)
 	private long mobile;

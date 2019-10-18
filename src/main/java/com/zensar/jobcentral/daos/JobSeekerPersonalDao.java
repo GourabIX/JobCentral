@@ -3,6 +3,7 @@ package com.zensar.jobcentral.daos;
 import java.util.List;
 
 import com.zensar.jobcentral.entities.JobSeekerPersonal;
+import com.zensar.jobcentral.entities.Login;
 /**
  * @author Sushma Kumari
  * @creation_date 15 Oct 2019 02:32 PM
@@ -18,7 +19,7 @@ public interface JobSeekerPersonalDao {
 	void update(JobSeekerPersonal jobSeekerPersonal);
 	void delete(JobSeekerPersonal jobSeekerPersonal);
 	JobSeekerPersonal getById(int jobSeekerId);
-	JobSeekerPersonal getByUsername(String username);
+	Login getByUsername(String username);
 	List<JobSeekerPersonal> getAllJobSeekersPersonalDetails();
 	
 

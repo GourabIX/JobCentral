@@ -3,6 +3,7 @@ package com.zensar.jobcentral.services;
 import java.util.List;
 
 import com.zensar.jobcentral.entities.JobSeekerPersonal;
+import com.zensar.jobcentral.entities.Login;
 /**
  * @author Sushma Kumari
  * @creation_date 04 Oct 2019 02:47 PM
@@ -17,7 +18,7 @@ public interface JobSeekerPersonalService {
 	void add(JobSeekerPersonal jobSeekerPersonal);
     void update(JobSeekerPersonal jobSeekerPersonal);
     void remove(JobSeekerPersonal jobSeekerPersonal);
-    JobSeekerPersonal findJobSeekerByUsername(String username);
+    Login findJobSeekerByUsername(String username);
     JobSeekerPersonal findJobSeekerById(int jobSeekerId);
     List<JobSeekerPersonal> findAllJobSeekerPersonalDetails();
     

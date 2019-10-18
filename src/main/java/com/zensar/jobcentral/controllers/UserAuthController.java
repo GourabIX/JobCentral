@@ -24,14 +24,15 @@ public class UserAuthController {
     private LoginService loginService;
 
     @PostMapping("/login")
-    public String loginGateway(@RequestParam("uname") String username, @RequestParam("passwd") String password) 
+    public String loginGateway(@RequestParam("uname") String username, @RequestParam("passwd") String password, @RequestParam("uid") int userId) 
     {
         try 
         {
             Login login = new Login();
             login.setUsername(username);
             login.setPassword(password);
-            String userRole = loginService.findUserRoleTypeByUsername(login.getUsername());
+            // String userRole = loginService.findUserRoleTypeByUsername(username);
+            String userRole = loginService.findUserById(userId).getRoleType();
 
             if (userRole.equalsIgnoreCase("JSK"))
             {

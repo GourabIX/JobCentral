@@ -14,6 +14,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -56,7 +58,7 @@ public class JobSeekerController
     // JobSeeker Login control is already taken care of in UserLoginController.
 
     @PutMapping(value = "/jobseekers/personal/update")
-	public String updateJobSeekerPersonalDetails(@RequestParam("uname") String username, @RequestParam("name") String name, @RequestParam("dob") Date dob, @RequestParam("mobile") long mobile)
+	public String updateJobSeekerPersonalDetails(@RequestParam("uname") String username, @RequestParam("name") String name, @RequestParam("dob") @DateTimeFormat(iso = ISO.DATE) Date dob, @RequestParam("mobile") long mobile)
 	{
 		try
 		{

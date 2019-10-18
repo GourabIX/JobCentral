@@ -3,6 +3,7 @@ package com.zensar.jobcentral.services;
 import com.zensar.jobcentral.daos.JobSeekerPersonalDao;
 import org.springframework.transaction.annotation.Transactional;
 import com.zensar.jobcentral.entities.JobSeekerPersonal;
+import com.zensar.jobcentral.entities.Login;
 
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class JobSeekerPersonalServices implements JobSeekerPersonalService {
     }
 
 	@Override
-	public JobSeekerPersonal findJobSeekerByUsername(String username) {
+	public Login findJobSeekerByUsername(String username) {
 		// TODO Auto-generated method stub
 		return jobSeekerPersonalDao.getByUsername(username);
 	}
