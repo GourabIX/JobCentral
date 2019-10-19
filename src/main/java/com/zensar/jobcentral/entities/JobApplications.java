@@ -32,7 +32,7 @@ public class JobApplications {
 	@JoinColumn(name = "userId")
 	private Login login;
 	
-	@OneToOne(mappedBy = "jobApplications")
+	@OneToOne
 	@JoinColumn(name = "jobId")
 	private Job jobs;
 	
@@ -40,7 +40,7 @@ public class JobApplications {
 	
 	// Employer will need to see the JobSeeker's complete profile
 	@OneToOne
-	@JoinColumn(name = "userId")
+	@JoinColumn(name = "jobSeekerId")
 	private JobSeeker jobSeeker;
 
 	public String getApplicationId() {

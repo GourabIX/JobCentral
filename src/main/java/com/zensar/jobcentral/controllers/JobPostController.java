@@ -5,17 +5,11 @@ import java.util.List;
 
 import com.zensar.jobcentral.entities.Job;
 import com.zensar.jobcentral.entities.Location;
-import com.zensar.jobcentral.services.EmployerServiceImpl;
 import com.zensar.jobcentral.services.JobServiceImpl;
-import com.zensar.jobcentral.services.LocationService;
-import com.zensar.jobcentral.services.LocationServiceImpl;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import javassist.bytecode.stackmap.BasicBlock.Catch;
 
 /*
  * @author Chaithrodaya BS

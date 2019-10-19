@@ -3,7 +3,6 @@ package com.zensar.jobcentral.exceptions;
 @SuppressWarnings("serial")
 public class ServiceException extends Exception
 {
-	private String errormessage;
 	
 	public ServiceException() 
 	{
@@ -13,7 +12,6 @@ public class ServiceException extends Exception
 	public ServiceException(String errormessage) 
 	{
 		super(errormessage);
-		this.errormessage = errormessage;
 	}
 	
 }

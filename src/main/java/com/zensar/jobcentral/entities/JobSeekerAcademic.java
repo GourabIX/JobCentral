@@ -1,5 +1,14 @@
 package com.zensar.jobcentral.entities;
 
+/**
+ * @author Gourab Sarkar
+ * @modification_date 12 Oct 2019 20:08
+ * @creation_date 01 Oct 2019 21:02
+ * @version 0.1
+ * @copyright Zensar Technologies 2019. All Rights Reserved.
+ * @description This is the persistent JobSeekerAcademic Class (operates in Persistence layer)
+ */
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,9 +31,13 @@ public class JobSeekerAcademic {
 	@JoinColumn(name = "jobSeekerId")
 	private JobSeeker jobSeeker;
 	
+	@Column(nullable = false, updatable = true)
 	private int sscYear;
+	@Column(nullable = false, updatable = true)
 	private double sscPercent;
+	@Column(nullable = false, updatable = true)
 	private int hscYear;
+	@Column(nullable = false, updatable = true)
 	private double hscPercent;
 	@Column(nullable = false, updatable = true)
 	private String qualification;

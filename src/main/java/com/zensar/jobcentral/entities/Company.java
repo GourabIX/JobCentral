@@ -1,5 +1,14 @@
 package com.zensar.jobcentral.entities;
 
+/**
+ * @author Gourab Sarkar
+ * @modification_date 07 Oct 2019 20:08
+ * @creation_date 01 Oct 2019 21:02
+ * @version 0.1
+ * @copyright Zensar Technologies 2019. All Rights Reserved.
+ * @description This is the persistent Company Class (operates in Persistence layer)
+ */
+
 import java.util.List;
 
 /**
@@ -12,6 +21,7 @@ import java.util.List;
  */
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -29,7 +39,7 @@ public class Company {
 	private int companyId;
 	private String companyName;
 	
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.LAZY)
 	private List<Location> locations;
 	
 	@OneToMany(mappedBy = "company")

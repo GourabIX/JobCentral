@@ -2,6 +2,17 @@ package com.zensar.jobcentral.entities;
 
 /**
  * @author Gourab Sarkar
+ * @modification_date 07 Oct 2019 20:08
+ * @creation_date 01 Oct 2019 21:02
+ * @version 0.1
+ * @copyright Zensar Technologies 2019. All Rights Reserved.
+ * @description This is the persistent Employer Class (operates in Persistence layer)
+ */
+
+import java.util.List;
+
+/**
+ * @author Gourab Sarkar
  * @modification_date 07 Oct 2019 18:55
  * @creation_date 01 Oct 2019 21:02
  * @version 0.1
@@ -11,6 +22,7 @@ package com.zensar.jobcentral.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -39,12 +51,16 @@ public class Employer {
 	@Column(nullable = false, updatable = true)
 	private String designation;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "companyId")
 	private Company company;
 	
 	@OneToMany(mappedBy = "employer")
-	private Job jobs;
+	private List<Job> jobs;
+	
+	@ManyToOne
+	@JoinColumn(name = "locationId")
+	private Location location;
 
 	public int getEmployerId() {
 		return employerId;
@@ -94,12 +110,20 @@ public class Employer {
 		this.company = company;
 	}
 
-	public Job getJobs() {
+	public List<Job> getJobs() {
 		return jobs;
 	}
 
-	public void setJobs(Job jobs) {
+	public void setJobs(List<Job> jobs) {
 		this.jobs = jobs;
+	}
+
+	public Location getLocation() {
+		return location;
+	}
+
+	public void setLocation(Location location) {
+		this.location = location;
 	}
 
 	@Override

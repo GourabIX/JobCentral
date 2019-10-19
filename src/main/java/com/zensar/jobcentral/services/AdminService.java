@@ -1,5 +1,8 @@
 package com.zensar.jobcentral.services;
 
+import java.util.List;
+
+import com.zensar.jobcentral.entities.Admin;
 import com.zensar.jobcentral.entities.Company;
 import com.zensar.jobcentral.entities.Employer;
 
@@ -15,8 +18,8 @@ import com.zensar.jobcentral.entities.Employer;
 public interface AdminService
 
 {                           
-   public boolean isEmployerValid(Employer employer, Company company);
-   
-   public String getUniqueCode(Employer employer);
-		
+    List <Admin>findAllAdmins();
+    Admin findByAdminId(int adminId);
+    Admin updateAdminById(Admin adminId);
+    public String getUniqueCode(Employer employer);
 }

@@ -1,6 +1,16 @@
 package com.zensar.jobcentral.entities;
 
+/**
+ * @author Gourab Sarkar
+ * @modification_date 12 Oct 2019 20:08
+ * @creation_date 01 Oct 2019 21:02
+ * @version 0.1
+ * @copyright Zensar Technologies 2019. All Rights Reserved.
+ * @description This is the persistent JobSeekerProfessional Class (operates in Persistence layer)
+ */
+
 import java.sql.Blob;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,9 +34,10 @@ public class JobSeekerProfessional {
 	@JoinColumn(name = "jobSeekerId")
 	private JobSeeker jobSeeker;
 	
+	@Column(nullable = false, updatable = true)
 	private String lastRole;
-	private int fromDateLastRole;
-	private int toDateLastRole;
+	private Date fromDateLastRole;
+	private Date toDateLastRole;
 	@Column(nullable = false, updatable = true)
 	private String skillset;
 	@Column(nullable = false, updatable = true)
@@ -56,19 +67,19 @@ public class JobSeekerProfessional {
 		this.lastRole = lastRole;
 	}
 	
-	public int getFromDateLastRole() {
+	public Date getFromDateLastRole() {
 		return fromDateLastRole;
 	}
 	
-	public void setFromDateLastRole(int fromDateLastRole) {
+	public void setFromDateLastRole(Date fromDateLastRole) {
 		this.fromDateLastRole = fromDateLastRole;
 	}
 	
-	public int getToDateLastRole() {
+	public Date getToDateLastRole() {
 		return toDateLastRole;
 	}
 	
-	public void setToDateLastRole(int toDateLastRole) {
+	public void setToDateLastRole(Date toDateLastRole) {
 		this.toDateLastRole = toDateLastRole;
 	}
 	

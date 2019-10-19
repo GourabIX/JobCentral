@@ -2,25 +2,24 @@ package com.zensar.jobcentral.daos;
 
 import java.util.List;
 
-import org.hibernate.HibernateException;
-
-import org.hibernate.query.Query;
-import org.springframework.stereotype.Repository;
-
 import com.zensar.jobcentral.entities.Job;
 
+import org.hibernate.HibernateException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.hibernate5.HibernateTemplate;
+import org.springframework.stereotype.Repository;
+
 @Repository
-public class JobDaoImpl extends DaoAssistant  implements JobDao {
+public class JobDaoImpl implements JobDao {
      
+	@Autowired
+	private HibernateTemplate hibernateTemplate;
      
 	@Override
 	public List<Job> getAllJobs() {
 		try 
 		{
-			beginTx();
-			Query query = getCurrentSession().createQuery("From Jobs");
-			List<Job> listOfJobs = query.list();
-			return listOfJobs;
+			return (List<Job>) hibernateTemplate.find("from Job");
 		}
 		catch (HibernateException hbexc) 
 		{
@@ -33,8 +32,7 @@ public class JobDaoImpl extends DaoAssistant  implements JobDao {
 	public Job getByJobId(int jobId) {
 		try
 		{
-			beginTx();
-			return getCurrentSession().get(Job.class, jobId);	
+			return hibernateTemplate.get(Job.class, jobId);	
 		}
 		catch (HibernateException hbexc) 
 		{
@@ -44,11 +42,11 @@ public class JobDaoImpl extends DaoAssistant  implements JobDao {
 	}
 
 	@Override
-	public Job getByCategory(String category) {
+	public List<Job> getByCategory(String category) {
 		try
 		{
-			beginTx();
-			return getCurrentSession().get(Job.class, category);	
+			Object[] values = {category};
+			return (List<Job>) hibernateTemplate.find("from Job J WHERE J.category=?", values);	
 		}
 		catch (HibernateException hbexc) 
 		{
@@ -58,11 +56,11 @@ public class JobDaoImpl extends DaoAssistant  implements JobDao {
 	}
 	
 	@Override
-	public Job getByLocation(int locationId) {
+	public List<Job> getByLocation(int locationId) {
 		try
 		{
-			beginTx();
-			return getCurrentSession().get(Job.class, locationId);	
+			Object[] values = {locationId};
+			return (List<Job>) hibernateTemplate.find("from Job J WHERE J.locationId=?", values);	
 		}
 		catch (HibernateException hbexc) 
 		{
@@ -76,9 +74,7 @@ public class JobDaoImpl extends DaoAssistant  implements JobDao {
 	public void insertJobs(Job job) {
 		try
 		{
-			beginTx();
-			getCurrentSession().save(job);
-			commitTransaction();
+			hibernateTemplate.save(job);
 			System.out.println("Debug: job having ID: " + job.getJobId() + " has been saved successfully.");
 		}
 		catch (HibernateException hbexc) 
@@ -92,9 +88,7 @@ public class JobDaoImpl extends DaoAssistant  implements JobDao {
 	public void updateJobs(Job job) {
 		try
 		{
-			beginTx();
-			getCurrentSession().update(job);
-			commitTransaction();
+			hibernateTemplate.update(job);
 			System.out.println("Debug: Job  having ID: " + job.getJobId() + " has been updated successfully.");
 		}
 		catch (HibernateException hbexc) 
@@ -108,9 +102,7 @@ public class JobDaoImpl extends DaoAssistant  implements JobDao {
 	public void deleteJobs(Job job) {
 		try
 		{
-			beginTx();
-			getCurrentSession().delete(job);
-			commitTransaction();
+			hibernateTemplate.delete(job);
 			System.out.println("Debug: Job  having ID: " + job.getJobId() + " has been updated successfully.");
 		}
 		catch (HibernateException hbexc) 

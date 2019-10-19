@@ -18,6 +18,7 @@ public interface LocationService
 	void insertLocation(Location location);
 	void updateLocation(Location location);
 	void deleteLocation(Location location);
+	Location findByCityState(String city, String state);
 	
 	
 }

@@ -1,104 +1,54 @@
 package com.zensar.jobcentral.services;
 
-import java.util.Properties;
+import java.util.List;
 
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-
-import com.zensar.jobcentral.entities.Company;
+import com.zensar.jobcentral.daos.AdminDao;
+import com.zensar.jobcentral.entities.Admin;
 import com.zensar.jobcentral.entities.Employer;
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class AdminServiceImpl implements AdminService {
 
-	public boolean isEmployerValid(Employer employer,Company company) 
-	{
+    @Autowired
+    private AdminDao adminDao;
 
-		//	mail verification code starts
+    @Override
+    public List<Admin> findAllAdmins() {
+        List<Admin> list = adminDao.getAllAdmins();
+        return list;
+    }
 
-		// Recipient's email ID needs to be mentioned.
-		String to = "vejefa@appmaillist.com";
+    public Admin findByAdminId(int adminId) 
+    {
+        return adminDao.getByAdminId(adminId);
 
-		// Sender's email ID needs to be mentioned
-		String from = "bzyprjcg@sharklasers.com";
+    }
+    @Override
+    public Admin updateAdminById(Admin admin) 
+    {
+        return adminDao.updateAdmin(admin.getAdminId());
 
-		// Assuming you are sending email from localhost
-		String host = "sharklasers.com";
+    }
+  
 
-		// Get system properties
-		Properties properties = System.getProperties();
+    @Override
+    public String getUniqueCode(Employer employer)
 
-		// Setup mail server
-		properties.setProperty("mail.smtp.host", host);
+    {
+        String name = employer.getName();
 
-		// Get the default Session object.
-		Session session = Session.getDefaultInstance(properties);
+        String name1 = name.substring(0, 3);
 
-		try {
-			// Create a default MimeMessage object.
-			MimeMessage message = new MimeMessage(session);
+        long con = employer.getContact();
 
-			// Set From: header field of the header.
-			message.setFrom(new InternetAddress(from));
+        String str = Long.toString(con);
 
-			// Set To: header field of the header.
-			message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+        String str1 = str.substring(6);
 
-			// Set Subject: header field
-			message.setSubject("This is the Subject Line!");
+        String str2 = name1 + str1;
 
-			// Now set the actual message
-			message.setText("This is actual message");
+        return str2;
+    }
 
-			// Send message
-			Transport.send(message);
-			System.out.println("Sent message successfully....");
-
-		} 
-
-		catch (MessagingException mex) 
-		{
-			mex.printStackTrace();
-		}
-
-		String c1=getUniqueCode(employer);
-		// sendEmail(c1, otherArgs...);
-		System.out.println("enter your code");
-		
-		// TODO: Enable after deciding the UI employer verification page.
-		// if(userCode.equals(c1)) {
-		// 	return true;
-		// }
-		// else 
-		// 	return false;
-
-		return false;
-	}
-
-
-	@Override
-	public String getUniqueCode(Employer employer)
-
-	{
-		String name=employer.getName();
-
-		String name1=name.substring(0, 3);
-
-		long con=employer.getContact();
-
-		String str= Long.toString(con);
-
-		String str1=str.substring(6);
-
-		String str2=name1+str1;		
-
-		return str2;
-	}        
 }
-
-
-
-

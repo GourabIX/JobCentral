@@ -41,14 +41,14 @@ public class JobServiceImpl implements JobService {
 	}
 
     @Override
-	public Job getByJobCategory(String category) {
+	public List<Job> getByJobCategory(String category) {
 		
 		return jobDao.getByCategory(category);
 		
 	}
 
     @Override
-	public Job getByJobLocation(int locationId) {
+	public List<Job> getByJobLocation(int locationId) {
 		
 		return jobDao.getByLocation(locationId);
 		

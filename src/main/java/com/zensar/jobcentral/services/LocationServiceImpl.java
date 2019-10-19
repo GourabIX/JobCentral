@@ -58,4 +58,10 @@ public class LocationServiceImpl implements LocationService {
 		locationDao.deleteLocation(location);
 	}
 
+	@Override
+	public Location findByCityState(String city, String state) {
+		
+		return locationDao.getByCityState(city, state);
+	}
+
 }

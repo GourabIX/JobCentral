@@ -10,31 +10,36 @@ package com.zensar.jobcentral.controllers;
  */
 
 import java.util.List;
-import com.zensar.jobcentral.entities.Company;
-import com.zensar.jobcentral.entities.Employer;
-import com.zensar.jobcentral.entities.Login;
-import com.zensar.jobcentral.exceptions.EmployerException;
-import com.zensar.jobcentral.exceptions.LoginException;
-import com.zensar.jobcentral.services.CompanyServiceImpl;
-import com.zensar.jobcentral.services.EmployerServiceImpl;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
+import com.zensar.jobcentral.entities.Company;
+import com.zensar.jobcentral.entities.Employer;
+import com.zensar.jobcentral.entities.Login;
+import com.zensar.jobcentral.exceptions.EmployerException;
+import com.zensar.jobcentral.exceptions.ServiceException;
+import com.zensar.jobcentral.services.CompanyService;
+import com.zensar.jobcentral.services.EmployerService;
+import com.zensar.jobcentral.services.LoginService;
+
+@RestController
 public class EmployerController
 {
 
     @Autowired
-    EmployerServiceImpl employerServiceImpl;
+    EmployerService employerService;
 
     @Autowired
-    CompanyServiceImpl companyServiceImpl;
+    CompanyService companyService;
 
     @Autowired
-    UserAuthController userAuthController;
+    LoginService loginService;
 
     // Employer Registration control is already taken care of in UserRegController.
     // Employer Login control is already taken care of in UserLoginController.
@@ -44,7 +49,7 @@ public class EmployerController
     {
         try
         {
-            if (employerServiceImpl.findEmployerByUsername(username) != null)
+            if (employerService.findEmployerByUsername(username) != null)
             {
                 Employer employer = new Employer();
                 employer.setName(name);
@@ -52,20 +57,20 @@ public class EmployerController
                 employer.setDesignation(designation);
 
                 Company company = new Company();
-                if (companyServiceImpl.findCompanyByName(companyName) != null)
+                if (companyService.findCompanyByName(companyName) != null)
                 {
-                    company = companyServiceImpl.findCompanyByName(companyName);
-                    company.setCompanyName(companyName);
-                    companyServiceImpl.updateCompany(company);
+                    company = companyService.findCompanyByName(companyName);
                 }
                 else
                 {
                     company.setCompanyName(companyName);
-                    companyServiceImpl.insertCompany(company);
+                    company.setLocations(null);
+                    company.setJobs(null);
+                    companyService.insertCompany(company);
                 }
 
                 employer.setCompany(company);
-                employerServiceImpl.updateEmployer(employer);
+                employerService.updateEmployer(employer);
                 System.err.println("Debug: Employer details have been updated successfully.");
                 return "employer_home";
             }
@@ -87,7 +92,7 @@ public class EmployerController
     {
         try
         {
-            return employerServiceImpl.findAllEmployers();
+            return employerService.findAllEmployers();
         }
         catch (EmployerException empEx)
         {
@@ -101,7 +106,7 @@ public class EmployerController
     {
         try 
         {
-            return employerServiceImpl.getEmployerCount();
+            return employerService.getEmployerCount();
         }
         catch (EmployerException e) 
         {
@@ -115,9 +120,11 @@ public class EmployerController
     {
         try 
         {
-			if (employerServiceImpl.validateUser(login))
+			if (loginService.validateUser(login) && login.getRoleType().equals("EMP"))
 			{
-			    employerServiceImpl.removeEmployer(login.getUserId());
+				System.err.println("Debug: Employer credentials verified. Proceeding to account deletion...");
+			    employerService.removeEmployer(login.getUserId());
+			    loginService.removeUser(login);
                 System.err.println("Debug: Employer account has been deleted successfully.");
                 return "jobcentral_home";
 			}
@@ -130,8 +137,8 @@ public class EmployerController
         catch (EmployerException e)
         {
 			e.printStackTrace();
-		}
-        catch (LoginException e)
+		} 
+        catch (ServiceException e) 
         {
 			e.printStackTrace();
 		}

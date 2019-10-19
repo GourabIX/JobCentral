@@ -5,7 +5,8 @@ import java.util.List;
 import com.zensar.jobcentral.entities.Location;
 
 import org.hibernate.HibernateException;
-import org.hibernate.query.Query;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -18,16 +19,16 @@ import org.springframework.stereotype.Repository;
  *
  */
 @Repository
-public class LocationDaoImpl extends DaoAssistant  implements LocationDao{
+public class LocationDaoImpl  implements LocationDao{
+	
+	@Autowired
+	private HibernateTemplate hibernateTemplate;
 	
 	@Override
 	public List<Location> getAllLocations() {
 		try 
 		{
-			beginTx();
-			Query query = getCurrentSession().createQuery("From Location");
-			List<Location> listOfLocations = query.list();
-			return listOfLocations;
+			return (List<Location>) hibernateTemplate.find("from Location");
 		}
 		catch (HibernateException hbexc) 
 		{
@@ -40,8 +41,7 @@ public class LocationDaoImpl extends DaoAssistant  implements LocationDao{
 	public Location getByLocationId(int locationId) {
 		try 
 		{
-			beginTx();
-			return getCurrentSession().get(Location.class, locationId);	
+			return hibernateTemplate.get(Location.class, locationId);	
 		}
 		catch (HibernateException hbexc) 
 		{
@@ -53,9 +53,7 @@ public class LocationDaoImpl extends DaoAssistant  implements LocationDao{
 	public void insertLocation(Location location) {
 		try
 		{
-			beginTx();
-			getCurrentSession().save(location);
-			commitTransaction();
+			hibernateTemplate.save(location);
 			System.out.println("Debug: location  having ID: " + location.getLocationId() + " has been saved successfully.");
 		}
 		catch (HibernateException hbexc) 
@@ -67,9 +65,7 @@ public class LocationDaoImpl extends DaoAssistant  implements LocationDao{
 	public void updateLocation(Location location) {
 		try
 		{
-			beginTx();
-			getCurrentSession().update(location);
-			commitTransaction();
+			hibernateTemplate.update(location);
 			System.out.println("Debug: location having ID: " + location.getLocationId() + " has been saved successfully.");
 		}
 		catch (HibernateException hbexc) 
@@ -81,9 +77,7 @@ public class LocationDaoImpl extends DaoAssistant  implements LocationDao{
 	public void deleteLocation(Location location) {
 		try
 		{
-			beginTx();
-			getCurrentSession().delete(location);
-			commitTransaction();
+			hibernateTemplate.delete(location);
 			System.out.println("Debug: location having ID: " + location.getLocationId() + " has been saved successfully.");
 		}
 		catch (HibernateException hbexc) 
@@ -91,6 +85,13 @@ public class LocationDaoImpl extends DaoAssistant  implements LocationDao{
 			hbexc.printStackTrace();
 		}
 		
+	}
+
+	@Override
+	public Location getByCityState(String city, String state) 
+	{
+		Object[] values = {city, state};
+		return hibernateTemplate.get(Location.class, values);
 	}
 	
 	

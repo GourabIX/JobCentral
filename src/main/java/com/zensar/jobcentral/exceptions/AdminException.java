@@ -2,9 +2,7 @@ package com.zensar.jobcentral.exceptions;
 
 @SuppressWarnings("serial")
 public class AdminException extends Exception
-{
-		private String errormessage;
-		
+{		
 		public AdminException() 
 		{
 			System.out.println("Admin permissions denied.Please try again");
@@ -13,6 +11,5 @@ public class AdminException extends Exception
 		public AdminException(String errormessage) 
 		{
 			super(errormessage);
-			this.errormessage = errormessage;
 		}
 }
