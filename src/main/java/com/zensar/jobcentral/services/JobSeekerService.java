@@ -15,6 +15,9 @@ import com.zensar.jobcentral.entities.JobSeeker;
 
 public interface JobSeekerService 
 {
-	JobSeeker findJobSeekerByUsername(String username);
 	List<JobSeeker> findAllJobSeekers();
+	JobSeeker findJobSeekerByUserId(int userId);
+	void addJobSeeker(JobSeeker jobSeeker);
+	void updateJobSeeker(JobSeeker jobSeeker);
+	void deleteJobSeeker(JobSeeker jobSeeker);
 }

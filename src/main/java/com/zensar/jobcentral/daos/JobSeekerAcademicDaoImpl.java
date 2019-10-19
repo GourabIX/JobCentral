@@ -33,7 +33,7 @@ public class JobSeekerAcademicDaoImpl implements JobSeekerAcademicDao {
     @Override
     public void update(JobSeekerAcademic jobSeekerAcademic) {
         // TODO Auto-generated method stub
-        hibernateTemplate.update(jobSeekerAcademic);
+        hibernateTemplate.saveOrUpdate(jobSeekerAcademic);
     }
 
     @Override
@@ -45,17 +45,7 @@ public class JobSeekerAcademicDaoImpl implements JobSeekerAcademicDao {
     @Override
     public List<JobSeekerAcademic> getAll() {
         // TODO Auto-generated method stub
-        return (List<JobSeekerAcademic>) hibernateTemplate.find("from JobSeeker");
+        return (List<JobSeekerAcademic>) hibernateTemplate.find("from JobSeekerAcademic");
     }
-
-    @Override
-    public JobSeekerAcademic getByUserName(String username) {
-        // TODO Auto-generated method stub
-        return hibernateTemplate.get(JobSeekerAcademic.class, username);
-    }
-
-   
-	
-
 	
 }

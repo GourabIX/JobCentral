@@ -11,6 +11,8 @@ package com.zensar.jobcentral.entities;
 
 import java.util.List;
 
+import javax.persistence.Column;
+
 /**
  * @author Gourab Sarkar
  * @modification_date 07 Oct 2019 18:55
@@ -30,6 +32,8 @@ import javax.persistence.OneToMany;
 
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Component
 @Entity
 public class Company {
@@ -37,12 +41,14 @@ public class Company {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int companyId;
+	@Column(unique = true, nullable = false, updatable = true)
 	private String companyName;
 	
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany
+	@JsonIgnore
 	private List<Location> locations;
 	
-	@OneToMany(mappedBy = "company")
+	@OneToMany(mappedBy = "company", fetch = FetchType.EAGER)
 	private List<Job> jobs;
 	
 	@OneToMany(mappedBy = "company")

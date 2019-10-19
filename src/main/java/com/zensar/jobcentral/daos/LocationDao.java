@@ -20,6 +20,5 @@ public interface LocationDao {
 	void insertLocation(Location location);
 	void updateLocation(Location location);
 	void deleteLocation(Location location);
-	Location getByCityState(String city, String state);
 		
 }

@@ -32,7 +32,7 @@ public class JobSeekerProfessionalDaoImpl implements JobSeekerProfessionalDao {
     @Override
     public void update(JobSeekerProfessional jobSeekerProfessional) {
         // TODO Auto-generated method stub
-        hibernateTemplate.update(jobSeekerProfessional);
+        hibernateTemplate.saveOrUpdate(jobSeekerProfessional);
     }
 
     @Override
@@ -44,7 +44,7 @@ public class JobSeekerProfessionalDaoImpl implements JobSeekerProfessionalDao {
     @Override
     public List<JobSeekerProfessional> getAll() {
         // TODO Auto-generated method stub
-        return (List<JobSeekerProfessional>) hibernateTemplate.find("from JobSeeker");
+        return (List<JobSeekerProfessional>) hibernateTemplate.find("from JobSeekerProfessional");
     }
 
     @Override

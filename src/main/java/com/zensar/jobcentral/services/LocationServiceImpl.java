@@ -27,7 +27,7 @@ public class LocationServiceImpl implements LocationService {
 	private LocationDao locationDao;
 	
 	@Override
-	public List<Location> getAllLocations() {
+	public List<Location> findAllLocations() {
 
 		List<Location> list = locationDao.getAllLocations();
 		return list;
@@ -61,7 +61,15 @@ public class LocationServiceImpl implements LocationService {
 	@Override
 	public Location findByCityState(String city, String state) {
 		
-		return locationDao.getByCityState(city, state);
+		List<Location> allLocations = findAllLocations();
+		for (Location location : allLocations)
+		{
+			if (location.getCity().equals(city) && location.getState().equals(state))
+			{
+				return location;
+			}
+		}
+		return null;
 	}
 
 }

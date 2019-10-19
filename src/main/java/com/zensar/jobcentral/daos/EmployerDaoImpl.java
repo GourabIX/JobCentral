@@ -72,7 +72,7 @@ public class EmployerDaoImpl implements EmployerDao
 	{
 		try
 		{
-			hibernateTemplate.update(employer);
+			hibernateTemplate.saveOrUpdate(employer);
 			System.out.println("Debug: Employer having ID: " + employer.getEmployerId() + " has been updated successfully.");
 		}
 		catch (HibernateException hbexc) 
@@ -100,7 +100,14 @@ public class EmployerDaoImpl implements EmployerDao
 	{
 		try
 		{
-			return hibernateTemplate.get(Employer.class, username);
+			List<Employer> allEmployers = getAllEmployers();
+			for (Employer currentEmployer : allEmployers)
+			{
+				if (currentEmployer.getLogin().getUsername().equals(username))
+				{
+					return currentEmployer;
+				}
+			}
 		}
 		catch (HibernateException hbexc) 
 		{

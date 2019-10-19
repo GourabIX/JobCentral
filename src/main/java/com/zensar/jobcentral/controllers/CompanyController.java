@@ -24,15 +24,18 @@ import com.zensar.jobcentral.services.CompanyService;
 
 @RestController
 public class CompanyController {
+	
 	@Autowired
 	private CompanyService companyService;
 
 	@PostMapping("/company/add")
 	public String insertCompany(@RequestParam("companyName") String companyName) {
 		try {
-			if (companyService.findCompanyByName(companyName) == null) {
+			if (companyService.findCompanyByName(companyName) == null) 
+			{
 				Company company = new Company();
 				company.setCompanyName(companyName);
+				System.err.println("Company details are set.");
 				companyService.insertCompany(company);
 				System.err.println("insertion is done");
 				return "employer_home";
@@ -48,16 +51,17 @@ public class CompanyController {
 	}
 
 	@PutMapping("/company/update")
-	public String updateCompany(@RequestParam("companyName") String companyName) {
+	public String updateCompany(@RequestParam("companyName") String companyName, @RequestParam("newCompanyName") String newCompanyName) {
 		try {
 			if (companyService.findCompanyByName(companyName) != null) {
-				Company company = new Company();
-				company.setCompanyName(companyName);
+				Company company = findCompanyByName(companyName);
+				company.setCompanyName(newCompanyName);
 				companyService.updateCompany(company); 			// updating company data
 				System.out.println("updation success");
 				return "employer_home";
 
-			} else {
+			} 
+			else {
 				System.out.println("updation failure: company with name: " + companyName + " does not exist in database.");
 				return "employer_home";
 			}
@@ -104,8 +108,8 @@ public class CompanyController {
 	@GetMapping("/company")
 	public List<Company> getAllCompanies() {
 		try {
-			companyService.getAllCompanies();
-			System.out.println("list of all comapnies displayed");
+			System.err.println("list of all companies displayed");
+			return companyService.getAllCompanies();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -95,7 +95,14 @@ public class CompanyDaoImpl implements CompanyDao {
 	public Company getByCompanyName(String companyName) {
 		try 
 		{
-			return hibernateTemplate.get(Company.class, companyName);	
+			List<Company> allCompanies = getAllCompanies();
+			for (Company company : allCompanies)
+			{
+				if(company.getCompanyName().equals(companyName))
+				{
+					return company;
+				}
+			}
 		}
 		catch (HibernateException hbexc) 
 		{

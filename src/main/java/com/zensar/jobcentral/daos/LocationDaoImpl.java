@@ -87,13 +87,6 @@ public class LocationDaoImpl  implements LocationDao{
 		
 	}
 
-	@Override
-	public Location getByCityState(String city, String state) 
-	{
-		Object[] values = {city, state};
-		return hibernateTemplate.get(Location.class, values);
-	}
-	
 	
 	
 	

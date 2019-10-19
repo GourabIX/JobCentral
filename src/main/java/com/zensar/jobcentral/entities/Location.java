@@ -42,23 +42,23 @@ public class Location {
 	private String city;
 	private String state;
 	
-	@OneToMany(mappedBy = "location")
+	@OneToMany(mappedBy = "location", fetch = FetchType.EAGER)
 	private List<Employer> employer;
 	
 	@ManyToMany(fetch = FetchType.LAZY)
 	private List<Company> companies;
 	
-	@OneToOne(mappedBy = "location")
+	@OneToOne(mappedBy = "location", fetch = FetchType.LAZY)
 	@JoinColumn(name = "locationId")
 	private Admin admin;
 	
 	// Additional to posting the Jobs employer should also have option to search
 	// for the employees by providing key requirements.
 	
-	@OneToMany(mappedBy = "location")
+	@OneToMany(mappedBy = "location", fetch = FetchType.LAZY)
 	private List<JobSeeker> jobSeeker;
 	
-	@OneToMany(mappedBy = "location")
+	@OneToMany(mappedBy = "location", fetch = FetchType.LAZY)
 	private List<Job> jobs;
 
 	public int getLocationId() {

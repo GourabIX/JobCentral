@@ -7,12 +7,14 @@ import com.zensar.jobcentral.entities.Login;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 @Transactional
 public class JobSeekerPersonalServices implements JobSeekerPersonalService {
-
+	
+	@Autowired
 	private JobSeekerPersonalDao jobSeekerPersonalDao;
 
     @Override

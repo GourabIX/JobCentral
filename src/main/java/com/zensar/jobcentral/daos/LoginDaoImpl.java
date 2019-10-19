@@ -10,6 +10,9 @@ package com.zensar.jobcentral.daos;
  */
 
 import com.zensar.jobcentral.entities.Login;
+
+import java.util.List;
+
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.HibernateTemplate;
@@ -36,19 +39,6 @@ public class LoginDaoImpl implements LoginDao
 		return null;
 	}
 
-	@Override
-	public Login getUserByUsername(String username) 
-	{
-		try
-		{
-			return hibernateTemplate.get(Login.class, username);
-		}
-		catch (HibernateException hbexc)
-		{
-			hbexc.printStackTrace();
-		}
-		return null;
-	}
 
 	@Override
 	public void insertUser(Login login) 
@@ -90,5 +80,12 @@ public class LoginDaoImpl implements LoginDao
 		{
 			hbexc.printStackTrace();
 		}	
+	}
+
+
+	@Override
+	public List<Login> getAll() {
+		// TODO Auto-generated method stub
+		return (List<Login>) hibernateTemplate.find("from Login");
 	}
 }

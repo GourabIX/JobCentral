@@ -6,12 +6,15 @@ import java.util.List;
 
 import com.zensar.jobcentral.daos.JobSeekerProfessionalDao;
 import com.zensar.jobcentral.entities.JobSeekerProfessional;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 @Transactional
 public class JobSeekerProfessionalServicesImpl implements JobSeekerProfessionalServices {
 
+	@Autowired
     private JobSeekerProfessionalDao jobSeekerProfessionalDao;
 
     @Override

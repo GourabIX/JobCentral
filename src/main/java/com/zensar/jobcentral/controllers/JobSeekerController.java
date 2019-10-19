@@ -10,16 +10,15 @@ package com.zensar.jobcentral.controllers;
  */
 
 import java.sql.Blob;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -58,17 +57,22 @@ public class JobSeekerController
     // JobSeeker Login control is already taken care of in UserLoginController.
 
     @PutMapping(value = "/jobseekers/personal/update")
-	public String updateJobSeekerPersonalDetails(@RequestParam("uname") String username, @RequestParam("name") String name, @RequestParam("dob") @DateTimeFormat(iso = ISO.DATE) Date dob, @RequestParam("mobile") long mobile)
+	public String updateJobSeekerPersonalDetails(@RequestParam("uname") String username, @RequestParam("name") String name, @RequestParam("dob") String dob, @RequestParam("mobile") long mobile)
 	{
 		try
 		{
-			if (jobSeekerPersonalServices.findJobSeekerByUsername(username) != null)
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+			LocalDate localDate = LocalDate.parse(dob);
+			
+			if (loginService.findUserByUsername(username) != null && loginService.findUserByUsername(username).getRoleType().equals("JSK"))
 			{
 				JobSeekerPersonal jobSeekerPersonalUpdated = new JobSeekerPersonal();
+				jobSeekerPersonalUpdated.setJobSeekerPersonalId(loginService.findUserByUsername(username).getUserId());
 				jobSeekerPersonalUpdated.setName(name);
 				jobSeekerPersonalUpdated.setMobile(mobile);
-				jobSeekerPersonalUpdated.setDob(dob);
-				jobSeekerPersonalServices.update(jobSeekerPersonalUpdated);
+				jobSeekerPersonalUpdated.setDob(localDate);
+				System.err.println("JobSeekerPersonal details set successfully.");
+				jobSeekerPersonalServices.add(jobSeekerPersonalUpdated);
 				System.err.println("Debug: JobSeeker personal details successfully updated.");
 				return "jobseeker_home";
 			}
@@ -90,7 +94,7 @@ public class JobSeekerController
     {
         try
         {
-            if (jobSeekerAcademicServices.findJobSeekerAcademicByUsername(username) != null)
+            if (loginService.findUserByUsername(username) != null && loginService.findUserByUsername(username).getRoleType().equals("JSK"))
             {
                 JobSeekerAcademic jobSeekerAcademicUpdated = new JobSeekerAcademic();
                 jobSeekerAcademicUpdated.setSscYear(sscYear);
@@ -123,7 +127,7 @@ public class JobSeekerController
     {
         try
         {
-            if (jobSeekerProfessionalServices.findJobSeekerProfessionalByUsername(username) != null)
+            if (loginService.findUserByUsername(username) != null && loginService.findUserByUsername(username).getRoleType().equals("JSK"))
             {
                 JobSeekerProfessional jobSeekerProfessionalUpdated = new JobSeekerProfessional();
                 jobSeekerProfessionalUpdated.setLastRole(lastRole);
@@ -149,25 +153,31 @@ public class JobSeekerController
     }
 
     @DeleteMapping("/jobSeekers/delete")
-    public String deleteJobSeekerAccount(@RequestBody Login login, @RequestBody JobSeekerAcademic jobSeekerAcademic, @RequestBody JobSeekerPersonal jobSeekerPersonal, @RequestBody JobSeekerProfessional jobSeekerProfessional) 
+    public String deleteJobSeekerAccount(@RequestParam("uname") String username, @RequestParam("passwd") String password) 
     {
         try
         {
-            if (loginService.validateUser(login) && login.getRoleType().equals("JSK"))
-            {
-                System.err.println("Debug: Job Seeker credentials verified. Proceeding to account deletion...");
-				jobSeekerAcademicServices.remove(jobSeekerAcademic);
-                jobSeekerPersonalServices.remove(jobSeekerPersonal);
-                jobSeekerProfessionalServices.remove(jobSeekerProfessional);
-				loginService.removeUser(login);
-				System.err.println("Debug: Job Seeker account has been deleted successfully.");
-                return "jobcentral_home";
-			}
-            else
-            {
-                System.err.println("Debug: JobSeeker has entered invalid credentials.");
-                return "jobSeekers/delete";
-            }
+        	if (loginService.findUserByUsername(username) != null && loginService.findUserByUsername(username).getRoleType().equals("JSK"))
+        	{
+	            if (loginService.validateUser(loginService.findUserByUsername(username)) && loginService.findUserByUsername(username).getRoleType().equals("JSK"))
+	            {
+	                System.err.println("Debug: Job Seeker credentials verified. Proceeding to account deletion...");
+	                jobSeekerService.deleteJobSeeker(jobSeekerService.findJobSeekerByUserId(loginService.findUserByUsername(username).getUserId()));
+					loginService.removeUser(loginService.findUserByUsername(username));
+					System.err.println("Debug: Job Seeker account has been deleted successfully.");
+	                return "jobcentral_home";
+				}
+	            else
+	            {
+	                System.err.println("Debug: JobSeeker has entered invalid credentials.");
+	                return "jobSeekers/delete";
+	            }
+        	}
+        	else
+        	{
+        		System.err.println("User credentials don't match to existing records!");
+        		return "jobSeekers/delete";
+        	}
 		}
 		catch (ServiceException svcEx)
 		{
@@ -251,7 +261,8 @@ public class JobSeekerController
     {
     	try
     	{
-    		return jobSeekerService.findJobSeekerByUsername(username);
+    		Login jobSeekerAccount = loginService.findUserByUsername(username);
+    		return jobSeekerService.findJobSeekerByUserId(jobSeekerAccount.getUserId());
     	}
     	catch (Exception exc)
     	{

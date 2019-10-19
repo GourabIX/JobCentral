@@ -4,6 +4,8 @@ import com.zensar.jobcentral.daos.LoginDao;
 import com.zensar.jobcentral.entities.Login;
 import com.zensar.jobcentral.exceptions.ServiceException;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,7 +36,15 @@ public class LoginServiceImpl implements LoginService
     @Override
     public Login findUserByUsername(String username) throws ServiceException
     {
-        return loginDao.getUserByUsername(username);
+        List<Login> allUsers = findAllUsers();
+        for(Login login: allUsers) 
+        {
+        	if(login.getUsername().equals(username))
+        	{
+        		return login;
+        	}
+        }
+        return null;
     }
 
     @Override
@@ -58,7 +68,8 @@ public class LoginServiceImpl implements LoginService
     @Override
     public boolean validateUser(Login login) throws ServiceException 
     {
-        Login dbLoginCredentials = findUserByUsername(login.getUsername());
+        // Login dbLoginCredentials = findUserById(login.getUserId());
+    	Login dbLoginCredentials = findUserByUsername(login.getUsername());
 
         if (dbLoginCredentials != null)
         {
@@ -76,5 +87,18 @@ public class LoginServiceImpl implements LoginService
         Login login = findUserByUsername(username);
         return login.getRoleType();
     }
+    
+    @Override
+    public String findUserRoleTypeByUserId(int userId) throws ServiceException 
+    {
+        Login login = findUserById(userId);
+        return login.getRoleType();
+    }
+
+	@Override
+	public List<Login> findAllUsers() {
+		// TODO Auto-generated method stub
+		return loginDao.getAll();
+	}
 
 }

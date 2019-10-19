@@ -14,6 +14,7 @@ import com.zensar.jobcentral.exceptions.ServiceException;
 import com.zensar.jobcentral.services.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,49 +25,51 @@ public class UserAuthController {
     private LoginService loginService;
 
     @PostMapping("/login")
-    public String loginGateway(@RequestParam("uname") String username, @RequestParam("passwd") String password, @RequestParam("uid") int userId) 
+    public String loginGateway(@RequestParam("uname") String username, @RequestParam("passwd") String password) 
     {
         try 
-        {
-            Login login = new Login();
-            login.setUsername(username);
-            login.setPassword(password);
-            // String userRole = loginService.findUserRoleTypeByUsername(username);
-            String userRole = loginService.findUserById(userId).getRoleType();
-
-            if (userRole.equalsIgnoreCase("JSK"))
-            {
-                login.setRoleType("JSK");                   // Attach UserRoleType tag to current user trying to login.
-                if (loginService.validateUser(login))
-                {
-                    System.err.println("Debug: Login Succeeded as JobSeeker. Redirecting to JobSeeker Home page...");
-                    return "jobSeeker_home";            // use viewResolver to resolve mapping to .html page.
-                }
-            }
-            else if (userRole.equalsIgnoreCase("EMP"))
-            {
-                login.setRoleType("EMP");
-                if (loginService.validateUser(login))
-                {
-                    System.err.println("Debug: Login Succeeded as Employer. Redirecting to Employer Home page...");
-                    return "employer_home";
-                }
-            }
-            else if (userRole.equalsIgnoreCase("ADM"))
-            {
-                login.setRoleType("ADM");
-                if (loginService.validateUser(login))
-                {
-                    System.err.println("Debug: Login Succeeded as Admin. Redirecting to Admin Home page...");
-                    return "admin_home";
-                }
-            }
-            else if (userRole.equalsIgnoreCase("TEMP"))
-            {
-                login.setRoleType("TEMP");
-                System.err.println("Debug: User trying to login is an unverified user. Redirecting to verification page...");
-                return "userVerify";
-            }
+        {        	
+        	if (loginService.findUserByUsername(username) != null)
+        	{
+	        	String userRole = loginService.findUserRoleTypeByUsername(username);
+	        	Login login = new Login();
+	        	login.setUsername(username);
+	        	login.setPassword(password);
+	        	
+	            if (userRole.equalsIgnoreCase("JSK"))
+	            {
+	                login.setRoleType("JSK");                   // Attach UserRoleType tag to current user trying to login.
+	                if (loginService.validateUser(login))
+	                {
+	                    System.err.println("Debug: Login Succeeded as JobSeeker. Redirecting to JobSeeker Home page...");
+	                    return "jobSeeker_home";            // use viewResolver to resolve mapping to .html page.
+	                }
+	            }
+	            else if (userRole.equalsIgnoreCase("EMP"))
+	            {
+	                login.setRoleType("EMP");
+	                if (loginService.validateUser(login))
+	                {
+	                    System.err.println("Debug: Login Succeeded as Employer. Redirecting to Employer Home page...");
+	                    return "employer_home";
+	                }
+	            }
+	            else if (userRole.equalsIgnoreCase("ADM"))
+	            {
+	                login.setRoleType("ADM");
+	                if (loginService.validateUser(login))
+	                {
+	                    System.err.println("Debug: Login Succeeded as Admin. Redirecting to Admin Home page...");
+	                    return "admin_home";
+	                }
+	            }
+	            else if (userRole.equalsIgnoreCase("TMP"))
+	            {
+	                login.setRoleType("TMP");
+	                System.err.println("Debug: Employer trying to login is an unverified employer. Redirecting to verification page...");
+	                return "userVerify";
+	            }
+        	}
             else
             {
                 System.err.println("User has entered invalid credentials. Redirecting to Login page...");

@@ -31,9 +31,8 @@ import org.springframework.web.bind.annotation.RestController;
       
 
      @PostMapping("/jobs/postjob")
-     public String postJob( @RequestParam("jobname") String jobName,  @RequestParam("jobtype") String jobType, @RequestParam("noofvacancies") int numberofVacancies, @RequestParam("jobdesc") Clob jobDescription,  @RequestParam("jobskills") String skillsRequired, @RequestParam("joblocation") String state, @RequestParam("joblocation") String city ) 
+     public String postJob( @RequestParam("jobname") String jobName,  @RequestParam("jobtype") String jobType, @RequestParam("noofvacancies") int numberofVacancies, @RequestParam("jobdesc") Clob jobDescription,  @RequestParam("jobskills") String skillsRequired, @RequestParam("jobState") String state, @RequestParam("jobCity") String city ) 
      {
-       
         Job job = new Job();
         job.setJobName(jobName);
         job.setJobType(jobType);
@@ -45,11 +44,11 @@ import org.springframework.web.bind.annotation.RestController;
         location.setState(state);
         job.setLocation(location);
         jobServiceImpl.insertJob(job);
-     
+        System.err.println("Job properties set successfully!");
         return "employer_home";
-
-
      }
+     
+     
      @PostMapping("/jobs/deletejobpost")
      public String deleteJob(@RequestParam("jobId") int jobId) 
      {

@@ -34,7 +34,7 @@ public class JobSeekerPersonalDaoImpl implements JobSeekerPersonalDao {
     @Override
     public void update(JobSeekerPersonal jobSeekerPersonal) {
         // TODO Auto-generated method stub
-        hibernateTemplate.update(jobSeekerPersonal);
+        hibernateTemplate.saveOrUpdate(jobSeekerPersonal);
     }
 
     @Override

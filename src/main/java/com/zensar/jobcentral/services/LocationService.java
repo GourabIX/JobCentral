@@ -13,7 +13,7 @@ import com.zensar.jobcentral.entities.Location;
  */
 public interface LocationService 
 {
-	List<Location> getAllLocations();
+	List<Location> findAllLocations();
 	Location findByLocationId(int locationId);
 	void insertLocation(Location location);
 	void updateLocation(Location location);

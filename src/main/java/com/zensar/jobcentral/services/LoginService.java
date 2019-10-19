@@ -1,5 +1,7 @@
 package com.zensar.jobcentral.services;
 
+import java.util.List;
+
 import com.zensar.jobcentral.entities.Login;
 import com.zensar.jobcentral.exceptions.ServiceException;
 
@@ -21,4 +23,6 @@ public interface LoginService
 	void removeUser(Login login) throws ServiceException;
 	boolean validateUser(Login login) throws ServiceException;
 	String findUserRoleTypeByUsername(String username) throws ServiceException;
+	String findUserRoleTypeByUserId(int userId) throws ServiceException;
+	List<Login> findAllUsers();
 }

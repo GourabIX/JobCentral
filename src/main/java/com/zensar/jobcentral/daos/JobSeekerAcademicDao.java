@@ -19,6 +19,5 @@ public interface JobSeekerAcademicDao {
 	void update(JobSeekerAcademic jobSeekerAcademic);
 	void delete(JobSeekerAcademic jobSeekerAcademic);
 	List<JobSeekerAcademic> getAll();
-	JobSeekerAcademic getByUserName(String username);
 
 }

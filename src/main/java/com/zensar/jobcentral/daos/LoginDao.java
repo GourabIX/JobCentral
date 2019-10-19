@@ -1,5 +1,7 @@
 package com.zensar.jobcentral.daos;
 
+import java.util.List;
+
 /**
  * @author Priya Mirchandani, Gourab Sarkar
  * @modification_date 13 Oct 2019 11:33
@@ -16,7 +18,7 @@ public interface LoginDao
 	// Here 'user' refers to either an employer, jobseeker or an admin.
 
 	Login getUserById(int userId);
-	Login getUserByUsername(String username);
+	List<Login> getAll();
 	void insertUser(Login login);
 	void updateUser(Login login);
 	void deleteUser(Login login);

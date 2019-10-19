@@ -60,7 +60,7 @@ public class UserRegController
             Login login = new Login();
             login.setUsername(username);
             login.setPassword(password);
-            login.setRoleType("TEMP");                  // Employer just signed up -- could be a fraud -- is a TEMP employer.
+            login.setRoleType("TMP");                  // Employer just signed up -- could be a fraud -- is a TEMP employer.
             loginService.addUser(login);
 
             // Set the Employer instance variables

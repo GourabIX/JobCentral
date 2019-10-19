@@ -12,10 +12,10 @@ package com.zensar.jobcentral.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.zensar.jobcentral.daos.JobSeekerDao;
 import com.zensar.jobcentral.entities.JobSeeker;
 
 @Service
@@ -24,18 +24,40 @@ public class JobSeekerServiceImpl implements JobSeekerService
 {
 
 	@Autowired
-	private HibernateTemplate hibernateTemplate;
-	
-	@Override
-	public JobSeeker findJobSeekerByUsername(String username) 
-	{
-		return hibernateTemplate.get(JobSeeker.class, username);
-	}
+	private JobSeekerDao jobSeekerDao;
 
 	@Override
 	public List<JobSeeker> findAllJobSeekers() 
 	{
-		return (List<JobSeeker>) hibernateTemplate.find("from JobSeeker");
+		return jobSeekerDao.getAllJobSeekers();
 	}
+
+	@Override
+	public JobSeeker findJobSeekerByUserId(int userId) 
+	{
+		return jobSeekerDao.getJobSeekerById(userId);
+	}
+
+	@Override
+	public void addJobSeeker(JobSeeker jobSeeker)
+	{
+		jobSeekerDao.insert(jobSeeker);
+	}
+
+	@Override
+	public void updateJobSeeker(JobSeeker jobSeeker) 
+	{
+		jobSeekerDao.update(jobSeeker);
+	}
+
+	@Override
+	public void deleteJobSeeker(JobSeeker jobSeeker) 
+	{
+		jobSeekerDao.delete(jobSeeker);
+	}
+	
+	
+
+	
 
 }

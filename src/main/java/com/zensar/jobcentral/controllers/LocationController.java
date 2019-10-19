@@ -48,15 +48,15 @@ public class LocationController
     }
 
     @PutMapping("/locations/update")
-    public String updateLocation(@RequestParam("city") String city, @RequestParam("state") String state)
+    public String updateLocation(@RequestParam("city") String city, @RequestParam("state") String state, @RequestParam("city") String newCity, @RequestParam("state") String newState)
     {
         try
         {
             if (locationService.findByCityState(city, state) != null)
             {
                 Location location = locationService.findByCityState(city, state);
-                location.setCity(city);
-                location.setState(state);
+                location.setCity(newCity);
+                location.setState(newState);
                 locationService.updateLocation(location);
                 System.err.println("Debug: Location for state: " + state + " and city: " + city + " has been updated successfully.");
                 return "jobcentral_home";
@@ -74,7 +74,7 @@ public class LocationController
     }
 
     @DeleteMapping("/locations/delete")
-    public String deleteLocation(@RequestParam("city") String city, @RequestParam("state") String state)
+    public String deleteLocation(@RequestParam("locationId") int locationId, @RequestParam("city") String city, @RequestParam("state") String state)
     {
         try
         {
@@ -102,7 +102,7 @@ public class LocationController
     {
         try
         {
-            locationService.getAllLocations();
+            return locationService.findAllLocations();
         }
         catch ( Exception exc )
         {

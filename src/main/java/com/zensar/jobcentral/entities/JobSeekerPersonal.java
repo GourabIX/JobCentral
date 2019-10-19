@@ -1,5 +1,7 @@
 package com.zensar.jobcentral.entities;
 
+import java.time.LocalDate;
+
 /**
  * @author Gourab Sarkar
  * @modification_date 12 Oct 2019 20:08
@@ -38,7 +40,7 @@ public class JobSeekerPersonal {
 	private String name;
 	@Column(nullable = false, updatable = true)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date dob;
+	private LocalDate dob;
 	@Column(unique = true , nullable = false, updatable = true)
 	private long mobile;
 	
@@ -66,14 +68,14 @@ public class JobSeekerPersonal {
 		this.name = name;
 	}
 	
-	public Date getDob() {
+	public LocalDate getDob() {
 		return dob;
 	}
-	
-	public void setDob(Date dob) {
+
+	public void setDob(LocalDate dob) {
 		this.dob = dob;
 	}
-	
+
 	public long getMobile() {
 		return mobile;
 	}
