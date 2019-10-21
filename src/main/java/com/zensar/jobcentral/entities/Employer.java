@@ -11,6 +11,8 @@ package com.zensar.jobcentral.entities;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
+
 /**
  * @author Gourab Sarkar
  * @modification_date 07 Oct 2019 18:55
@@ -55,7 +57,7 @@ public class Employer {
 	@JoinColumn(name = "companyId")
 	private Company company;
 	
-	@OneToMany(mappedBy = "employer")
+	@OneToMany(mappedBy = "employer", cascade = CascadeType.ALL)
 	private List<Job> jobs;
 	
 	@ManyToOne

@@ -11,6 +11,7 @@ package com.zensar.jobcentral.entities;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -51,10 +52,10 @@ public class JobSeeker {
 	@JoinColumn(name = "locationId")
 	private Location location;
 	
-	@OneToMany(mappedBy = "jobSeeker")
+	@OneToMany(mappedBy = "jobSeeker", cascade = CascadeType.ALL)
 	private List<JobApplications> jobApplications;
 	
-	@OneToMany(mappedBy = "jobSeeker")
+	@OneToMany(mappedBy = "jobSeeker", cascade = CascadeType.ALL)
 	private List<Job> jobs;
 
 	public int getJobSeekerId() {

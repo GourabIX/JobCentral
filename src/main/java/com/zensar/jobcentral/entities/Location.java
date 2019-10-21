@@ -11,6 +11,8 @@ package com.zensar.jobcentral.entities;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
+
 /**
  * @author Gourab Sarkar
  * @modification_date 07 Oct 2019 18:58
@@ -42,7 +44,7 @@ public class Location {
 	private String city;
 	private String state;
 	
-	@OneToMany(mappedBy = "location", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "location", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<Employer> employer;
 	
 	@ManyToMany(fetch = FetchType.LAZY)
@@ -55,10 +57,10 @@ public class Location {
 	// Additional to posting the Jobs employer should also have option to search
 	// for the employees by providing key requirements.
 	
-	@OneToMany(mappedBy = "location", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "location", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<JobSeeker> jobSeeker;
 	
-	@OneToMany(mappedBy = "location", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "location", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Job> jobs;
 
 	public int getLocationId() {

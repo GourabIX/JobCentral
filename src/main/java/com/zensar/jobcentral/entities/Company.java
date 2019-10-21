@@ -11,6 +11,7 @@ package com.zensar.jobcentral.entities;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 
 /**
@@ -48,10 +49,10 @@ public class Company {
 	@JsonIgnore
 	private List<Location> locations;
 	
-	@OneToMany(mappedBy = "company", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "company", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<Job> jobs;
 	
-	@OneToMany(mappedBy = "company")
+	@OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
 	List<Employer> employers;
 
 	public int getCompanyId() {
