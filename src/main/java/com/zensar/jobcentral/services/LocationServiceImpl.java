@@ -64,7 +64,7 @@ public class LocationServiceImpl implements LocationService {
 		List<Location> allLocations = findAllLocations();
 		for (Location location : allLocations)
 		{
-			if (location.getCity().equals(city) && location.getState().equals(state))
+			if (location.getCity().equalsIgnoreCase(city) && location.getState().equalsIgnoreCase(state))
 			{
 				return location;
 			}

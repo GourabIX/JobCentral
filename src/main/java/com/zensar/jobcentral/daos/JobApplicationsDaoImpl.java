@@ -1,5 +1,7 @@
 package com.zensar.jobcentral.daos;
 
+import java.util.ArrayList;
+
 /**
  * @author Gourab Sarkar
  * @modification_date 13 Oct 2019 22:33
@@ -73,8 +75,15 @@ public class JobApplicationsDaoImpl implements JobApplicationsDao
 	{
 		try
 		{
-			Object[] values = {jobId};
-			List<JobApplications> listOfJobApplicationsByJobId = (List<JobApplications>) hibernateTemplate.find("FROM JobApplications JA WHERE JA.jobId = ?", values);
+			List<JobApplications> listOfAllJobApplications = getAllJobApplications();
+			List<JobApplications> listOfJobApplicationsByJobId = new ArrayList<JobApplications>();
+			for (JobApplications jobApplication : listOfAllJobApplications)
+			{
+				if (jobApplication.getJobs().getJobId().equalsIgnoreCase(jobId))
+				{
+					listOfJobApplicationsByJobId.add(jobApplication);
+				}
+			}
 			return listOfJobApplicationsByJobId;
 		}
 		catch (HibernateException hbexc) 
@@ -89,9 +98,16 @@ public class JobApplicationsDaoImpl implements JobApplicationsDao
 	{
 		try
 		{
-			Object[] params  = {company.getCompanyId()};
-			List<JobApplications> listOfJobApplicationsByCompany = (List<JobApplications>) hibernateTemplate.find("FROM JobApplications JA WHERE JA.companyId = ?", params);
-			return listOfJobApplicationsByCompany;
+			List<JobApplications> listOfJobApplications = getAllJobApplications();
+			List<JobApplications> listOfJobApplicationsByCompanyId = new ArrayList<JobApplications>();
+			for (JobApplications jobApplication : listOfJobApplications)
+			{
+				if (jobApplication.getJobs().getCompany().equals(company))
+				{
+					listOfJobApplicationsByCompanyId.add(jobApplication);
+				}
+			}
+			return listOfJobApplicationsByCompanyId;
 		}
 		catch (HibernateException hbexc) 
 		{
@@ -105,7 +121,7 @@ public class JobApplicationsDaoImpl implements JobApplicationsDao
 	{
 		try
 		{
-			hibernateTemplate.save(jobApplication);
+			hibernateTemplate.saveOrUpdate(jobApplication);
 			System.out.println("Debug: Job Application having ID: " + jobApplication.getApplicationId() + " has been saved successfully.");
 		}
 		catch (HibernateException hbexc) 
@@ -119,7 +135,7 @@ public class JobApplicationsDaoImpl implements JobApplicationsDao
 	{
 		try
 		{
-			hibernateTemplate.update(jobApplication);
+			hibernateTemplate.saveOrUpdate(jobApplication);
 			System.out.println("Debug: Job Application having ID: " + jobApplication.getApplicationId() + " has been updated successfully.");
 		}
 		catch (HibernateException hbexc) 

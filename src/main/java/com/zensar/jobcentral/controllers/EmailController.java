@@ -26,6 +26,7 @@ public class EmailController
     public void sendEmail()
     {
         emailService.sendEmail("gourab_recv_test@gmail.com", "Test subject", "Test message");
+        System.err.println("Debug: Email has been sent successfully.");
     }
 
 }

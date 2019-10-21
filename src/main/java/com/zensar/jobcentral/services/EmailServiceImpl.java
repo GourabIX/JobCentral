@@ -30,6 +30,7 @@ public class EmailServiceImpl implements EmailService
         mailMessage.setSubject(subject);
         mailMessage.setText(message);
         mailMessage.setFrom("gourab-test@jobcentral.com");
+        System.err.println("Email attributes have been set.");
 
         javaMailSender.send(mailMessage);
 

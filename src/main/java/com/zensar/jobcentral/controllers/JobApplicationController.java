@@ -130,7 +130,7 @@ public class JobApplicationController {
     }
     
     @GetMapping("/jobseekers/application/lookupJobId")
-    public List<JobApplications> findByJobId(String jobId)
+    public List<JobApplications> findByJobId(@RequestParam("jobId") String jobId)
     {
     	try
     	{
