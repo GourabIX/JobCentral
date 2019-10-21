@@ -7,9 +7,9 @@ import com.zensar.jobcentral.entities.Company;
 import com.zensar.jobcentral.entities.Employer;
 
 /**
- * @author Samraddhi Khare
+ * @author Chaithrodaya BS
  * @creation_date 5th october 2019 10:00AM
- * @modification_date 5th october 2019 11:37AM
+ * @modification_date 19th october 2019 10.30AM
  * @version 1.0
  * @copyright Zensar Technologies. All rights reserved
  * @Description It is a Service interface using buisness layer.
