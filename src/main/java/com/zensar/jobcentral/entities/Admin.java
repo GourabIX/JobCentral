@@ -10,6 +10,7 @@ package com.zensar.jobcentral.entities;
  */
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -29,7 +30,7 @@ public class Admin {
 	@JoinColumn(name = "userId")
 	private Login login;
 	
-	@OneToOne
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "locationId")
 	private Location location;
 
@@ -55,11 +56,6 @@ public class Admin {
 
 	public void setLocation(Location location) {
 		this.location = location;
-	}
-
-	@Override
-	public String toString() {
-		return "Admin [adminId=" + adminId + ", login=" + login + ", location=" + location + "]";
 	}
 
 }

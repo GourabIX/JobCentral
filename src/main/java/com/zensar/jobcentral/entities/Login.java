@@ -54,7 +54,6 @@ public class Login {
 	private Employer employer;
 	
 	@OneToOne(mappedBy = "login")
-	@JoinColumn(name = "userId")
 	private Admin admin;
 
 	public int getUserId() {
@@ -105,18 +104,15 @@ public class Login {
 		this.employer = employer;
 	}
 
-	public Admin getAdmin() {
+	
+	public Admin getAdmin() 
+	{ 
 		return admin;
 	}
-
-	public void setAdmin(Admin admin) {
-		this.admin = admin;
-	}
-
-	@Override
-	public String toString() {
-		return "Login [userId=" + userId + ", username=" + username + ", password=" + password + ", roleType="
-				+ roleType + ", jobSeeker=" + jobSeeker + ", employer=" + employer + ", admin=" + admin + "]";
+	  
+	public void setAdmin(Admin admin) 
+	{ 
+		this.admin = admin; 
 	}
 	
 }

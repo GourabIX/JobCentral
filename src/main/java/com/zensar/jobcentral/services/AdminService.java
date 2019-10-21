@@ -20,6 +20,7 @@ public interface AdminService
 {                           
     List <Admin>findAllAdmins();
     Admin findByAdminId(int adminId);
+    Admin findByUserId(int userId);
     void updateAdmin(Admin admin);
     public String getUniqueCode(Employer employer);
 }

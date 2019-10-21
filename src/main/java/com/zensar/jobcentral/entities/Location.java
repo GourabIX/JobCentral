@@ -44,14 +44,13 @@ public class Location {
 	private String city;
 	private String state;
 	
-	@OneToMany(mappedBy = "location", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "location", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Employer> employer;
 	
 	@ManyToMany(fetch = FetchType.LAZY)
 	private List<Company> companies;
 	
 	@OneToOne(mappedBy = "location", fetch = FetchType.LAZY)
-	@JoinColumn(name = "locationId")
 	private Admin admin;
 	
 	// Additional to posting the Jobs employer should also have option to search

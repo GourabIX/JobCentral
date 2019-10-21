@@ -55,4 +55,17 @@ public class AdminServiceImpl implements AdminService {
         return str2;
     }
 
+	@Override
+	public Admin findByUserId(int userId) {
+		List<Admin> listOfAllAdmins = findAllAdmins();
+		for (Admin admin : listOfAllAdmins)
+		{
+			if (admin.getLogin().getUserId() == userId)
+			{
+				return admin;
+			}
+		}
+		return null;
+	}
+
 }

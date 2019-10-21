@@ -47,7 +47,8 @@ public class AdminController {
 	{
 		try 
 		{
-			return adminService.findByAdminId(loginService.findUserById(userId).getAdmin().getAdminId());
+			// return adminService.findByAdminId(loginService.findUserById(userId).getAdmin().getAdminId());
+			return adminService.findByUserId(userId);
 		} 
 		catch (Exception e) 
 		{
@@ -66,7 +67,8 @@ public class AdminController {
 			if (loginService.findUserById(userId) != null) 
 			{
 				System.err.println("User match found. Proceeding to update account properties...");
-				Admin admin = adminService.findByAdminId(loginService.findUserById(userId).getAdmin().getAdminId());
+				//Admin admin = adminService.findByAdminId(loginService.findUserById(userId).getAdmin().getAdminId());
+				Admin admin = adminService.findByUserId(userId);
 				Login login = loginService.findUserById(userId);
 				System.err.println("Debug: Login object: " + login.toString());
 				login.setUsername(username);
