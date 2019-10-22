@@ -30,7 +30,7 @@ public class Admin {
 	@JoinColumn(name = "userId")
 	private Login login;
 	
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne
 	@JoinColumn(name = "locationId")
 	private Location location;
 

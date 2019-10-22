@@ -1,6 +1,11 @@
 package com.zensar.jobcentral.controllers;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import com.zensar.jobcentral.entities.Admin;
 import com.zensar.jobcentral.entities.Company;
@@ -9,6 +14,7 @@ import com.zensar.jobcentral.entities.Location;
 import com.zensar.jobcentral.entities.Login;
 import com.zensar.jobcentral.services.AdminService;
 import com.zensar.jobcentral.services.EmailService;
+import com.zensar.jobcentral.services.LocationService;
 import com.zensar.jobcentral.services.LoginService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +36,9 @@ public class AdminController {
 	
 	@Autowired
 	private LoginService loginService;
+	
+	@Autowired
+	private LocationService locationService;
 
 	@GetMapping("/admin/getalladmins")
 	public List<Admin> getAllAdmins() {
@@ -43,12 +52,16 @@ public class AdminController {
 	}
 
 	@GetMapping("/admin/getadminbyid")
-	public Admin getAdminById(@RequestParam("userId") int userId) 
+	public Map<String, Integer> getAdminById(@RequestParam("userId") int userId)			// Return admin's details as a List
 	{
 		try 
 		{
-			// return adminService.findByAdminId(loginService.findUserById(userId).getAdmin().getAdminId());
-			return adminService.findByUserId(userId);
+			Admin admin = adminService.findByUserId(userId);
+			Map<String, Integer> adminDetails = new HashMap<String, Integer>();
+			adminDetails.put("userId", admin.getLogin().getUserId());
+			adminDetails.put("locationId", admin.getLocation().getLocationId());
+			adminDetails.put("adminId", admin.getAdminId());
+			return adminDetails;			
 		} 
 		catch (Exception e) 
 		{
@@ -69,15 +82,17 @@ public class AdminController {
 				System.err.println("User match found. Proceeding to update account properties...");
 				//Admin admin = adminService.findByAdminId(loginService.findUserById(userId).getAdmin().getAdminId());
 				Admin admin = adminService.findByUserId(userId);
-				Login login = loginService.findUserById(userId);
+				Login login = admin.getLogin();
 				System.err.println("Debug: Login object: " + login.toString());
+				
 				login.setUsername(username);
 				login.setPassword(password);
+				loginService.modifyUser(login);
 				admin.setLogin(login);
-				Location location = new Location();
-				location.setCity(city);
-				location.setState(state);
+				
+				Location location = locationService.findByCityState(city, state);
 				admin.setLocation(location);
+				
 				adminService.updateAdmin(admin);
 				System.err.println("Admin with UserID: " + userId + " has been updated successfully.");
 				return "employer_home";
