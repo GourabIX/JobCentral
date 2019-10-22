@@ -46,11 +46,13 @@ public class Login {
 	private String roleType;
 	
 	@OneToOne(mappedBy = "login")
-	@JoinColumn(name = "userId")
+	// @JoinColumn(name = "userId")					// This is the parent table. Using foreign key 'userId'
+													// would mean that 'userId' foreign key comes to login table 
+													// from jobseeker table, which is wrong.
 	private JobSeeker jobSeeker;
 	
 	@OneToOne(mappedBy = "login")
-	@JoinColumn(name = "userId")
+	// @JoinColumn(name = "userId")
 	private Employer employer;
 	
 	@OneToOne(mappedBy = "login")
