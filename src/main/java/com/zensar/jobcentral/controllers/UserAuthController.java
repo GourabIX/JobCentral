@@ -1,5 +1,10 @@
 package com.zensar.jobcentral.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 /**
  * @author Gourab Sarkar
  * @modification_date 14 Oct 2019 23:26
@@ -12,11 +17,6 @@ package com.zensar.jobcentral.controllers;
 import com.zensar.jobcentral.entities.Login;
 import com.zensar.jobcentral.exceptions.ServiceException;
 import com.zensar.jobcentral.services.LoginService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class UserAuthController {
