@@ -15,10 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zensar.jobcentral.entities.Company;
 import com.zensar.jobcentral.entities.Employer;
 import com.zensar.jobcentral.exceptions.EmployerException;
 import com.zensar.jobcentral.exceptions.ServiceException;
@@ -42,39 +41,21 @@ public class EmployerController {
 	// Employer Login control is already taken care of in UserLoginController.
 
 	@PutMapping("/employers/update")
-	public String updateEmployer(@RequestParam("uname") String username, @RequestParam("name") String name,
-			@RequestParam("contact") long contact, @RequestParam("designation") String designation,
-			@RequestParam("companyName") String companyName) 
+	public String updateEmployer(@RequestBody Employer employer) 
 	{
 		try 
 		{
-			Employer employer = new Employer();
-			employer.setName(name);
-			employer.setContact(contact);
-			employer.setDesignation(designation);
-
-			Company company = new Company();
-			if (companyService.findCompanyByName(companyName) != null) 
+			if (employer.getLogin().equals(employerService.findEmployerByUsername(employer.getLogin().getUsername()).getLogin()))
 			{
-				company = companyService.findCompanyByName(companyName);
-			} 
-			else 
-			{
-				company.setCompanyName(companyName);
-				company.setLocations(null);
-				company.setJobs(null);
-				companyService.insertCompany(company);
+				employerService.updateEmployer(employer);
+				System.err.println("Debug: Employer details have been updated successfully.");
+				return "employer_home";
 			}
-
-			employer.setCompany(company);
-			employerService.updateEmployer(employer);
-			System.err.println("Debug: Employer details have been updated successfully.");
-			return "employer_home";
-		} 
+		}
 		catch (EmployerException empEx) 
 		{
 			empEx.printStackTrace();
-			System.err.println("Something went wrong with updating employer with username: " + username);
+			System.err.println("Something went wrong with updating employer with username: " + employer.getLogin().getUsername());
 		}
 		return "errorPage";
 	}
@@ -107,16 +88,16 @@ public class EmployerController {
 	}
 
 	@DeleteMapping("/employers/deleteEmployer")
-	public String removeEmployerAccount(@RequestParam("uname") String username, @RequestParam("passwd") String password) 
+	public String removeEmployerAccount(@RequestBody Employer employer) 
 	{
 		try {
-			if (loginService.findUserByUsername(username) != null && (loginService.findUserByUsername(username).getRoleType().equals("EMP") || loginService.findUserByUsername(username).getRoleType().equals("TMP"))) 
+			if (loginService.findUserByUsername(employer.getLogin().getUsername()) != null && (loginService.findUserByUsername(employer.getLogin().getUsername()).getRoleType().equals("EMP") || loginService.findUserByUsername(employer.getLogin().getUsername()).getRoleType().equals("TMP"))) 
 			{
-				if (loginService.validateUser(loginService.findUserByUsername(username))) 
+				if (loginService.validateUser(loginService.findUserByUsername(employer.getLogin().getUsername()))) 
 				{
 					System.err.println("Debug: Employer credentials verified. Proceeding to account deletion...");
-					employerService.removeEmployer(loginService.findUserByUsername(username).getUserId());
-					loginService.removeUser(loginService.findUserByUsername(username));
+					employerService.removeEmployer(loginService.findUserByUsername(employer.getLogin().getUsername()).getUserId());
+					loginService.removeUser(loginService.findUserByUsername(employer.getLogin().getUsername()));
 					System.err.println("Debug: Employer account has been deleted successfully.");
 					return "jobcentral_home";
 				} 
@@ -128,7 +109,7 @@ public class EmployerController {
 			} 
 			else 
 			{
-				System.err.println("No such employer with username: " + username + " exists.");
+				System.err.println("No such employer with username: " + employer.getLogin().getUsername() + " exists.");
 				return "errorPage";
 			}
 		} 

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,17 +23,14 @@ public class LocationController
     private LocationService locationService;
 
     @PostMapping("/locations/new")
-    public String addNewLocation(@RequestParam("city") String city, @RequestParam("state") String state)
+    public String addNewLocation(@RequestBody Location location)
     {
         try
         {
-            if (locationService.findByCityState(city, state) == null)
+            if (locationService.findByCityState(location.getCity(), location.getState()) == null)
             {
-                Location location = new Location();
-                location.setCity(city);
-                location.setState(state);
                 locationService.insertLocation(location);
-                System.err.println("Debug: New location for state: " + state + " and city: " + city + " has been added successfully.");
+                System.err.println("Debug: New location for state: " + location.getState() + " and city: " + location.getState() + " has been added successfully.");
                 return "jobcentral_home";
             }
             else
@@ -48,17 +46,14 @@ public class LocationController
     }
 
     @PutMapping("/locations/update")
-    public String updateLocation(@RequestParam("city") String city, @RequestParam("state") String state, @RequestParam("city") String newCity, @RequestParam("state") String newState)
+    public String updateLocation(@RequestBody Location location)
     {
         try
         {
-            if (locationService.findByCityState(city, state) != null)
+            if (locationService.findByCityState(location.getCity(), location.getState()) != null)
             {
-                Location updatedLocation = locationService.findByCityState(city, state);
-                updatedLocation.setCity(newCity);
-                updatedLocation.setState(newState);
-                locationService.updateLocation(updatedLocation);
-                System.err.println("Debug: Location for state: " + state + " and city: " + city + " has been updated successfully.");
+                locationService.updateLocation(location);
+                System.err.println("Debug: Location for state: " + location.getState() + " and city: " + location.getCity() + " has been updated successfully.");
                 return "jobcentral_home";
             }
             else
@@ -74,20 +69,19 @@ public class LocationController
     }
 
     @DeleteMapping("/locations/delete")
-    public String deleteLocation(@RequestParam("city") String city, @RequestParam("state") String state)
+    public String deleteLocation(@RequestBody Location location)
     {
         try
         {
-            if (locationService.findByCityState(city, state) != null)
+            if (locationService.findByCityState(location.getCity(), location.getState()) != null)
             {
-                Location location = locationService.findByCityState(city, state);
                 locationService.deleteLocation(location);
-                System.err.println("Location with state: " + state + " and city: " + city + " has been deleted successfully.");
+                System.err.println("Location with state: " + location.getState() + " and city: " + location.getCity() + " has been deleted successfully.");
                 return "jobcentral_home";
             }
             else
             {
-                System.err.println("No such location with state: " + state + " and city: " + city + " exists in the database!");
+                System.err.println("No such location with state: " + location.getState() + " and city: " + location.getCity() + " exists in the database!");
             }
         }
         catch ( Exception exc )
@@ -111,8 +105,8 @@ public class LocationController
         return null;
     }
 
-    @GetMapping("/locations/cityAndStateFiltered")
-    public Location findLocationByCityState(@RequestParam("city") String city, @RequestParam("state") String state)
+    @GetMapping("/locations/cityAndStateFiltered/{state}/{city}")
+    public Location findLocationByCityState(@RequestParam("state") String state, @RequestParam("city") String city)
     {
         try
         {

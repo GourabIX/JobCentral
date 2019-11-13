@@ -1,7 +1,9 @@
 package com.zensar.jobcentral.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,22 +21,25 @@ import com.zensar.jobcentral.exceptions.ServiceException;
 import com.zensar.jobcentral.services.LoginService;
 
 @RestController
+@CrossOrigin
 public class UserAuthController {
 
     @Autowired
     private LoginService loginService;
 
     @PostMapping("/login")
-    public String loginGateway(@RequestParam("uname") String username, @RequestParam("passwd") String password) 
+//    public String loginGateway(@RequestParam("username") String username, @RequestParam("password") String password)
+    public String loginGateway(@RequestBody Login login)
     {
         try 
         {        	
-        	if (loginService.findUserByUsername(username) != null)
+        	if (loginService.findUserByUsername(login.getUsername()) != null)
         	{
-	        	String userRole = loginService.findUserRoleTypeByUsername(username);
-	        	Login login = new Login();
-	        	login.setUsername(username);
-	        	login.setPassword(password);
+//	        	String userRole = loginService.findUserRoleTypeByUsername(login.getUsername());
+//	        	Login login = new Login();
+//	        	login.setUsername(username);
+//	        	login.setPassword(password);
+        		String userRole = login.getRoleType();
 	        	
 	            if (userRole.equalsIgnoreCase("JSK"))
 	            {

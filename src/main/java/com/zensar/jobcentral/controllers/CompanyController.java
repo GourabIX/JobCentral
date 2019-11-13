@@ -3,10 +3,12 @@ package com.zensar.jobcentral.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,24 +25,26 @@ import com.zensar.jobcentral.services.CompanyService;
  */
 
 @RestController
+@CrossOrigin
 public class CompanyController {
 	
 	@Autowired
 	private CompanyService companyService;
 
 	@PostMapping("/company/add")
-	public String insertCompany(@RequestParam("companyName") String companyName) {
+	public String insertCompany(@RequestBody Company company) {
 		try {
-			if (companyService.findCompanyByName(companyName) == null) 
+			if (companyService.findCompanyByName(company.getCompanyName()) == null) 
 			{
-				Company company = new Company();
-				company.setCompanyName(companyName);
 				System.err.println("Company details are set.");
 				companyService.insertCompany(company);
 				System.err.println("insertion is done");
 				return "employer_home";
-			} else {
+			} 
+			else 
+			{
 				System.err.println("Company already exists in the database!");
+				System.err.println("Company ID: " + companyService.findCompanyByName(company.getCompanyName()).getCompanyId());
 				return "employer_home";
 			}
 		} catch (Exception e) {
@@ -51,18 +55,16 @@ public class CompanyController {
 	}
 
 	@PutMapping("/company/update")
-	public String updateCompany(@RequestParam("companyName") String companyName, @RequestParam("newCompanyName") String newCompanyName) {
+	public String updateCompany(@RequestBody Company company) {
 		try {
-			if (companyService.findCompanyByName(companyName) != null) {
-				Company company = findCompanyByName(companyName);
-				company.setCompanyName(newCompanyName);
+			if (companyService.findById(company.getCompanyId()) != null) {
 				companyService.updateCompany(company); 			// updating company data
 				System.out.println("updation success");
 				return "employer_home";
 
 			} 
 			else {
-				System.out.println("updation failure: company with name: " + companyName + " does not exist in database.");
+				System.out.println("updation failure: company with id: " + company.getCompanyId() + " does not exist in database.");
 				return "employer_home";
 			}
 		} catch (Exception e) {
@@ -72,15 +74,14 @@ public class CompanyController {
 	}
 
 	@DeleteMapping("/company/delete")
-	public String deleteCompany(@RequestParam("companyName") String companyName) {
+	public String deleteCompany(@RequestBody Company company) {
 		try {
-			if (companyService.findCompanyByName(companyName) != null) {
-				Company company = companyService.findCompanyByName(companyName);
+			if (companyService.findById(company.getCompanyId()) != null) {
 				companyService.deleteCompany(company); 		// deleting company data
-				System.out.println("Company with name: " + companyName + " is deleted.");
+				System.out.println("Company with name: " + company.getCompanyName() + " is deleted.");
 				return "employer_home";
 			} else {
-				System.out.println("Company with name: " + companyName + " does not exist.");
+				System.out.println("Company with name: " + company.getCompanyName() + " does not exist.");
 				return "employer_home";
 			}
 
@@ -91,7 +92,7 @@ public class CompanyController {
 
 	}
 
-	@GetMapping("/company/findCompany")
+	@GetMapping("/company/name/{companyName}")
 	public Company findCompanyByName(@RequestParam("companyName") String companyName) {
 		try {
 			if (companyService.findCompanyByName(companyName) != null) {
@@ -116,7 +117,7 @@ public class CompanyController {
 		return null;
 	}
 
-	@GetMapping("/company/findCompanyById")
+	@GetMapping("/company/{companyId}")
 	public Company findCompanyById(@RequestParam("companyId") int companyId) {
 		try {
 			if (companyService.findById(companyId) != null) {
